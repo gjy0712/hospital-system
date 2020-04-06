@@ -1,12 +1,14 @@
 import {baseAxios as axios} from '../config/axios-instance'
 // import  axios from 'axios'
 import apiConf from '@/apiConfigs/api'
-import { CONNEXT_PAAS_TOKEN } from '@/config/webstore'
+import { TOKEN } from '@/config/webstore'
 import { getLocalStore } from '@/utils/webstore-utils'
 import router from '@/router'
 import { Loading } from 'element-ui'
 import { Message } from 'element-ui'
 import store from '@/vuex/store'
+
+
 /* ++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 apiDataFilter的定义
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++ */
@@ -18,7 +20,7 @@ let apiDataFilter = {
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++ */
     request({apiPath, data = {}, pathParams = [], method = 'get', contentType = 'application/json', blob = false,successCallback, errorCallback,completeCallback = () => {}}) {
         let apiUrl = this.pathParamsToUrl(apiPath, pathParams)
-        // let Authorization = getLocalStore(CONNEXT_PAAS_TOKEN)
+        // let Authorization = getLocalStore(TOKEN)
         method = method.toLowerCase()
         let opts = {
             timeout: apiConf.timeout,

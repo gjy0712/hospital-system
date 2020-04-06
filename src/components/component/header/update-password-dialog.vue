@@ -47,7 +47,7 @@
 <script>
    /* import apiDataFilter from "../../../utils/apiDataFilter";
     import {getLocalStore} from "../../../utils/webstore-utils";
-    import {CONNEXT_PAAS_USER} from "../../../config/webstore";
+    import {USER} from "../../../config/webstore";
     import store from '@/vuex/store'*/
 
     export default {
@@ -110,7 +110,7 @@
                 this.$refs['dataForm_ref'].validate(valid => {
                     /*if (valid) {
                         this.optionsLoading = true
-                        let userInfo = JSON.parse(getLocalStore(CONNEXT_PAAS_USER))
+                        let userInfo = JSON.parse(getLocalStore(USER))
                         apiDataFilter.request({
                             apiPath: 'common.updatePassword',
                             method:'post',

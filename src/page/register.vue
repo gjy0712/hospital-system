@@ -1,17 +1,27 @@
 <template>
     <div class="register-container">
         <div class="register-box">
-            <div class="register-title">医院预约挂号系统</div>
+            <div class="register-title">患者注册平台</div>
             <el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="100px" class="register-content">
-                <el-form-item label="用户名：" prop="username">
-                    <el-input size="medium" v-model="registerForm.username" placeholder="请输入用户名..."></el-input>
+                <el-form-item label="账号：" prop="account">
+                    <el-input size="medium" v-model="registerForm.account" placeholder="请输入账号..."></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话：" prop="phone">
+                <el-form-item label="名称：" prop="name">
+                    <el-input size="medium" v-model="registerForm.name" placeholder="请输入名称..."></el-input>
+                </el-form-item>
+                <!--<el-form-item label="联系电话：" prop="phone">
                     <el-input size="medium" v-model="registerForm.phone" placeholder="请输入电话..."></el-input>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item label="联系邮箱：" prop="mail">
                     <el-input size="medium" v-model="registerForm.mail" placeholder="请输入正确的邮箱地址..."></el-input>
                 </el-form-item>
+                <!--<el-form-item label="我是：" label-width="80px">
+                    <el-radio-group v-model="registerForm.userType">
+                        <el-radio label="patient">患者</el-radio>
+                        <el-radio label="doctor">医生</el-radio>
+                        <el-radio label="admin">管理员</el-radio>
+                    </el-radio-group>
+                </el-form-item>-->
                 <el-form-item label="密码：" prop="password">
                     <el-input type="password" size="medium" v-model="registerForm.password" placeholder="请输入密码..." ></el-input>
                 </el-form-item>
@@ -30,12 +40,14 @@
 </template>
 
 <script>
+    import apiDataFilter from "../utils/apiDataFilter";
+
     export default {
         name: "register",
         data() {
-            var validateUsername=(rule, value, callback) => {
+            var validateAccount=(rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入用户名'));
+                    callback(new Error('请输入账号'));
                 }
                 else{
                     callback();
@@ -56,7 +68,15 @@
                 //   });
                 // }
             };
-            var validatePhone = (rule, value, callback) => {
+            var validateName=(rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入用户名'));
+                }
+                else{
+                    callback();
+                }
+            };
+            /*var validatePhone = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('请输入电话号码'));
                 }
@@ -68,7 +88,7 @@
                         callback();
                     }
                 }
-            };
+            };*/
             var validateMail=(rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请输入联系邮箱'));
@@ -108,19 +128,24 @@
             };
             return {
                 registerForm: {
-                    username: '',
-                    phone: '',
+                    account: '',
+                    name: '',
+                    // phone: '',
                     mail: '',
+                    userType: 'patient',
                     password: '',
                     dbpassword: ''
                 },
                 rules: {
-                    username: [
-                        {validator: validateUsername, trigger: 'blur' }
+                    account: [
+                        {validator: validateAccount, trigger: 'blur' }
                     ],
-                    phone: [
+                    name: [
+                        {validator: validateName, trigger: 'blur' }
+                    ],
+                    /*phone: [
                         {validator: validatePhone, trigger: 'blur' }
-                    ],
+                    ],*/
                     mail: [
                         {validator: validateMail, trigger: 'blur' }
                     ],
@@ -137,12 +162,45 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        apiDataFilter.request({
+                            apiPath: 'common.register',
+                            method: 'post',
+                            data: {
+                                account: this.registerForm.account,
+                                name: this.registerForm.name,
+                                email: this.registerForm.mail,
+                                password: this.registerForm.password
+                            },
+                            successCallback: (res) => {
+                                if (res.code === '0') {
+                                    // 失败
+                                    this.$notify.error({
+                                        title: '失败',
+                                        message: res.msg
+                                    });
+                                } else {
+                                    // 成功
+                                    this.$notify.success({
+                                        title: '成功',
+                                        message: res.msg
+                                    });
+                                    this.$router.push('/login')
+                                }
+                            },
+                            errorCallback: (err) => {
+                                // console.log(err)
+                                // this.$message.error(err.data)
+                            },
+                        })
+                    }
+
+                    /*if (valid) {
                         this.$message.success('注册成功，请登录');
                         this.$router.push('/login');
                     } else {
                         console.log('error submit!!');
                         return false;
-                    }
+                    }*/
                 });
             },
             resetregisterForm(formName) {
@@ -185,12 +243,15 @@
                 border-bottom: 1px solid #ddd;
             }
 
+
+
             .register-content {
                 padding: 30px 30px;
 
                 .el-form-item {
                     margin-bottom: 15px;
                 }
+
                 .el-form-item:nth-child(6) {
                     margin-bottom: 0;
                 }

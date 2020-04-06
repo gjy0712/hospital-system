@@ -92,7 +92,7 @@
         },
         computed: {
             username() {
-                let username = localStorage.getItem('ms_username');
+                let username = localStorage.getItem('Authorization');
                 return username ? username : this.name;
             }
         },
@@ -140,8 +140,11 @@
                         this.$refs['updatePassword_ref'].showDialog();
                         break
                     case 'loginOut':
-                        localStorage.removeItem('ms_username');
+                        //退出登录，清空token
+                        localStorage.removeItem('Authorization');
                         this.$router.push('/login');
+                        /*localStorage.removeItem('ms_username');
+                        this.$router.push('/login');*/
                         break
                     default:
                         break

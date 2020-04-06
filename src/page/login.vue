@@ -18,6 +18,13 @@
                         <el-button slot="prepend" icon="el-icon-lock"></el-button>
                     </el-input>
                 </el-form-item>
+                <el-form-item label="我是：" label-width="80px">
+                    <el-radio-group v-model="loginForm.userType">
+                        <el-radio label="PATIENT">患者</el-radio>
+                        <el-radio label="DOCTOR">医生</el-radio>
+                        <el-radio label="ADMIN">管理员</el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item class="login-btn">
                     <el-button type="primary"
                                :disabled="!(loginForm.username && loginForm.password)"
@@ -33,6 +40,11 @@
 </template>
 
 <script>
+    import apiDataFilter from "../utils/apiDataFilter";
+    import {mapMutations} from "vuex";
+    import { getLocalStore, setLocalStore } from '@/utils/webstore-utils.js'
+    import { USER, TOKEN } from '@/config/webstore'
+
     export default {
         name: "login",
         data() {
@@ -40,7 +52,9 @@
                 loginForm: {
                     username: '',
                     password: '',
+                    userType: 'PATIENT'
                 },
+                userToken:'',
                 rules: {
                     username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
                     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
@@ -48,12 +62,51 @@
             }
         },
         methods: {
+            ...mapMutations(['changeLogin']),
             submitForm() {
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
-                        this.$message.success('登录成功');
+                        apiDataFilter.request({
+                            apiPath: 'common.login',
+                            method: 'post',
+                            data: {
+                                username: this.loginForm.username,
+                                password: this.loginForm.password,
+                                userType: this.loginForm.userType,
+                            },
+                            successCallback: (res) => {
+                                console.log(res.data);
+                                let userInfo = {
+                                    userName: this.loginForm.username,
+                                    userType: this.loginForm.userType,
+                                    // functionList: res.data.func_list,
+                                    // logoURL: this.logoURL
+                                }
+                                setLocalStore(TOKEN, res.data)
+                                setLocalStore(USER, userInfo)
+
+                                // this.$router.push('/');
+
+                                this.userToken = res.data.token;
+                                // 将用户token保存到vuex中
+                                this.changeLogin({ Authorization:this.userToken });
+                                this.$message.success('登录成功');
+                                this.$router.push('/');
+
+                                /*if (res.data.pwd_need_change) {
+                                    this.notFirstLogin = false
+                                    this.$refs['updatePasswordDialog_ref'].showDialog(true)
+                                } else {
+                                    this.$router.push('/')
+                                }*/
+                            },
+                            errorCallback: (err) => {
+                                // this.$message.error(err.data.error)
+                            },
+                        })
+                        /*this.$message.success('登录成功');
                         localStorage.setItem('ms_username', this.loginForm.username);
-                        this.$router.push('/');
+                        this.$router.push('/');*/
                     } else {
                         this.$message.error('请输入账号和密码');
                         return false;
@@ -100,7 +153,11 @@
             .login-content {
                 padding: 30px 30px;
 
-                .el-form-item:nth-child(3) {
+                .el-form-item:nth-child(2), .el-form-item:nth-child(3) {
+                    margin-bottom: 10px;
+                }
+
+                .el-form-item:nth-child(4) {
                     margin-bottom: 0;
                 }
                 .login-btn {

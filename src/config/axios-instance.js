@@ -1,10 +1,10 @@
 import axios from 'axios'
 import {serviceURL} from '@/config/env'
-import {CONNEXT_PAAS_TOKEN} from '@/config/webstore'
+import {TOKEN} from '@/config/webstore'
 import {getLocalStore} from '@/utils/webstore-utils'
 import router from '@/router'
 import store from '@/vuex/store'
-import * as Sentry from '@sentry/browser';
+// import * as Sentry from '@sentry/browser';
 import {Message} from "element-ui";
 
 let baseAxios = axios.create({
@@ -12,7 +12,7 @@ let baseAxios = axios.create({
 })
 baseAxios.interceptors.request.use(
     config => {
-        let authToken = getLocalStore(CONNEXT_PAAS_TOKEN)
+        let authToken = getLocalStore(TOKEN)
         if (authToken) {
             config.headers['Authorization'] = authToken
         }

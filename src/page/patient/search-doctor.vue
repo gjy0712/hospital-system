@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import { getTodoList, addTodo } from '../../api/api'; // 引入我们 封装好的两个接口函数。
+    // import { getTodoList, addTodo } from '../../api/api'; // 引入我们 封装好的两个接口函数。
     export default {
         name: "search-doctor",
         data() {
@@ -27,18 +27,18 @@
             };
         },
         created() { // 调用请求菜单列表数据的接口
-            getTodoList({}).then(res => {
+            /*getTodoList({}).then(res => {
                 console.log(res)
                 const TODOS = res.data.todos; // 数据都会返回在res.data里面。
                 this.items = TODOS; // 我的把菜单数据赋值给定义的this.items
                 this.todoId = TODOS[0].id; // 把菜单数据的默认的第一个对象的id赋值给默认选中的id
-            });
+            });*/
         },
         methods: {
-            goList(id) { // 点击菜单时候,替换选中id
+            /*goList(id) { // 点击菜单时候,替换选中id
                 this.todoId = id;
-            },
-            addTodoList() { // 点击新增按钮时候
+            },*/
+            /*addTodoList() { // 点击新增按钮时候
                 // 调用新增菜单的接口，在接口调用成功在请求数据
                 addTodo({}).then(data => {
                     getTodoList({}).then(res => {
@@ -47,7 +47,7 @@
                         this.items = TODOS;
                     });
                 });
-            }
+            }*/
         }
     }
 </script>

@@ -2,11 +2,11 @@
  * localstore 存储
  */
 
-const CONNEXT_PAAS_USER = 'connextpaasuser' // 用户对象包含 用户名 用户类型
+const USER = 'user' // 用户对象包含 用户名 用户类型
 
 const CLUSTER_ID = 'clusterid' // 集群id
 const CLUSTER_STATUS = 'clusterstatus' // 集群状态
-const CONNEXT_PAAS_TOKEN = 'connextpaastoken'
+const TOKEN = 'token'
 let LAGU = 'zh' // 语言
 
 /**
@@ -33,8 +33,8 @@ const SYS_VER = 'sys_ver'
 
 
 export {
-    CONNEXT_PAAS_TOKEN,
-    CONNEXT_PAAS_USER,
+    TOKEN,
+    USER,
     CLUSTER_ID,
     CLUSTER_STATUS,
     CONNEXT_PAAS_PROJECTID,
