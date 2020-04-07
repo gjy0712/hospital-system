@@ -26,7 +26,7 @@
                 <el-col :span="8" class="health-content">
                     <el-card shadow="hover">
                         <div class="health-detail">
-                            <img src="../../assets/img/health_3.jpg" alt="" width="120" height="90">
+                            <img src="../../assets/img/health_3.jpg" alt="" width="120px" height="90px">
                             <p class="health-p">只是配个眼镜,却查出差点失明!忽视眼睛“年检”,当心这些风险</p>
                         </div>
                     </el-card>
@@ -45,19 +45,19 @@
 <!--        推荐医生-->
         <div class="box">
             <div class="box-title">推荐医生</div>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="内科" name="internal_medicine">用户管理</el-tab-pane>
-                <el-tab-pane label="外科" name="surgical">配置管理</el-tab-pane>
-                <el-tab-pane label="妇产科" name="obstetrics_gynecology">角色管理</el-tab-pane>
-                <el-tab-pane label="耳鼻喉科" name="ENT">定时任务补偿</el-tab-pane>
-                <el-tab-pane label="皮肤科" name="dermatology">定时任务补偿</el-tab-pane>
-                <el-tab-pane label="肿瘤科" name="Oncology">定时任务补偿</el-tab-pane>
-            </el-tabs>
+            <el-row>
+                <el-col :span="4" v-for="(o, index) in doctorList" :key="o" :offset="index > 0 ? 2 : 0">
+                    <el-card :body-style="{ padding: '0px' }">
+
+                    </el-card>
+                </el-col>
+            </el-row>
         </div>
     </div>
 </template>
 
 <script>
+    import apiDataFilter from "../../utils/apiDataFilter";
     import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
     export default {
@@ -102,7 +102,8 @@
                     spaceBetween: 30,
                     loop: true
                 },
-                activeName: 'internal_medicine'
+                activeName: 'internal_medicine',
+                doctorList: []
             }
         },
         created() {
@@ -111,11 +112,22 @@
                 stopOnLastSlide: false,
                 disableOnInteraction: false
             } : false;
-
+            this.getDoctorList()
+                apiDataFilter.request({
+                    apiPath: 'patient.home.doctorList',
+                    method: 'post',
+                    data: '',
+                    successCallback : (res) => {
+                        console.log(res)
+                    }
+                })
         },
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
+            },
+            getDoctorList() {
+
             }
         }
     }

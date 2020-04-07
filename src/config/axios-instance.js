@@ -12,10 +12,14 @@ let baseAxios = axios.create({
 })
 baseAxios.interceptors.request.use(
     config => {
+
         let authToken = getLocalStore(TOKEN)
         if (authToken) {
             config.headers['Authorization'] = authToken
         }
+        /*if (localStorage.getItem('Authorization')) {
+            config.headers.Authorization = localStorage.getItem('Authorization');
+        }*/
         let resourceID = router.currentRoute.meta.parent_id
         if (resourceID === 1) {
             resourceID = router.currentRoute.meta.id
@@ -35,7 +39,7 @@ baseAxios.interceptors.response.use(
         return response
     },
     function (error) {
-        if (error.response.status == 401) {
+        if (error.response.status === 401) {
             store.dispatch('LogOut').then(() => {
                 location.reload() // 为了重新实例化vue-router对象 避免bug
             })

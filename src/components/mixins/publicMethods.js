@@ -1,7 +1,7 @@
 // type ：success/warning/info/error
 export const InfoMixins = {
     methods: {
-        alertInfo(message, title = this.$t('public.error'), type = 'error') {
+        alertInfo(message, title = '错误', type = 'error') {
             this.$notify({
                 title: title,
                 message: message,

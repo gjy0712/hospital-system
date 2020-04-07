@@ -20,12 +20,12 @@ let apiDataFilter = {
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++ */
     request({apiPath, data = {}, pathParams = [], method = 'get', contentType = 'application/json', blob = false,successCallback, errorCallback,completeCallback = () => {}}) {
         let apiUrl = this.pathParamsToUrl(apiPath, pathParams)
-        // let Authorization = getLocalStore(TOKEN)
+        let Authorization = getLocalStore(TOKEN)
         method = method.toLowerCase()
         let opts = {
             timeout: apiConf.timeout,
             headers: {
-                // Authorization: Authorization
+                Authorization: Authorization
             }
         }
         if (method === 'post') {
@@ -46,18 +46,17 @@ let apiDataFilter = {
         errorCallback = errorCallback || this.errorCallback
         if (method === 'get' || method === 'delete' ) {
             axios[method](apiUrl, opts).then(res => {
-                    if (parseInt(res.data.code, 10) === apiConf.successStatusCode) {
-                        successCallback(res.data)
-                    } else {
-                        errorCallback(res)
-                    }
-                    completeCallback()
-                },
-                res => {
-                    errorCallback(res.response)
-                    completeCallback()
+                if (parseInt(res.data.code, 10) === apiConf.successStatusCode) {
+                    successCallback(res.data)
+                } else {
+                    errorCallback(res)
                 }
-            )
+                completeCallback()
+            },
+            res => {
+                errorCallback(res.response)
+                completeCallback()
+            })
         }else {
             axios[method](apiUrl, data, opts).then(res => {
                     if (blob){

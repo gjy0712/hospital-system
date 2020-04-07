@@ -44,6 +44,7 @@
     import {mapMutations} from "vuex";
     import { getLocalStore, setLocalStore } from '@/utils/webstore-utils.js'
     import { USER, TOKEN } from '@/config/webstore'
+    import {InfoMixins} from '@/components/mixins/publicMethods'
 
     export default {
         name: "login",
@@ -61,9 +62,10 @@
                 },
             }
         },
+        mixins: [InfoMixins],
         methods: {
             ...mapMutations(['changeLogin']),
-            submitForm() {
+            async submitForm() {
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         apiDataFilter.request({
@@ -75,22 +77,23 @@
                                 userType: this.loginForm.userType,
                             },
                             successCallback: (res) => {
-                                console.log(res.data);
-                                let userInfo = {
-                                    userName: this.loginForm.username,
+                                /*let userInfo = {
+                                    name: this.loginForm.username,
                                     userType: this.loginForm.userType,
-                                    // functionList: res.data.func_list,
-                                    // logoURL: this.logoURL
-                                }
+                                }*/
+                                // Object.assign(param,userInfo)
                                 setLocalStore(TOKEN, res.data)
-                                setLocalStore(USER, userInfo)
-
+                                // setLocalStore(USER, userInfo)
                                 // this.$router.push('/');
-
-                                this.userToken = res.data.token;
+                                this.userToken = res.data;
                                 // 将用户token保存到vuex中
                                 this.changeLogin({ Authorization:this.userToken });
-                                this.$message.success('登录成功');
+                                // 成功
+                                this.$notify({
+                                    title: '成功',
+                                    message: '登录成功！',
+                                    type: "success"
+                                });
                                 this.$router.push('/');
 
                                 /*if (res.data.pwd_need_change) {
@@ -101,12 +104,14 @@
                                 }*/
                             },
                             errorCallback: (err) => {
-                                // this.$message.error(err.data.error)
+                                // 失败
+                                this.$notify.error({
+                                    title: '失败',
+                                    message: err.data.msg
+                                });
                             },
                         })
-                        /*this.$message.success('登录成功');
-                        localStorage.setItem('ms_username', this.loginForm.username);
-                        this.$router.push('/');*/
+
                     } else {
                         this.$message.error('请输入账号和密码');
                         return false;

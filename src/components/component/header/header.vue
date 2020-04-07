@@ -31,12 +31,12 @@
                         </div>
                         <!-- 用户头像 -->
                         <div class="user-avator">
-                            这头像
+                            <img src="../../../assets/img/patient_logo.png" alt="">
                         </div>
                         <!-- 用户名下拉菜单 -->
                         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                             <span class="el-dropdown-link">
-                                {{username}}
+                                {{account}}
                                 <i class="el-icon-caret-bottom"></i>
                             </span>
                             <el-dropdown-menu size="medium" slot="dropdown">
@@ -77,12 +77,16 @@
 <script>
     import UpdatePasswordDialog from "./update-password-dialog";
     import bus from '../bus';
+    import { USER } from '@/config/webstore'
+    import { setSessionStore, getSessionStore, getLocalStore,} from '@/utils/webstore-utils'
+
 
     export default {
         name: "header",
         components: {UpdatePasswordDialog},
         data() {
             return {
+                account: '',
                 collapse: false,
                 fullscreen: false,
                 name: 'jinyan',
@@ -90,11 +94,19 @@
                 dialogVisiable: false,
             }
         },
-        computed: {
-            username() {
-                let username = localStorage.getItem('Authorization');
-                return username ? username : this.name;
+        mounted() {
+            let userObj = JSON.parse(getLocalStore(USER))
+            console.log(userObj)
+            if (userObj) {
+                // this.userType = userObj.userType
+                this.account = userObj.account || this.name
             }
+        },
+        computed: {
+            /*account() {
+                let account = localStorage.getItem('USER');
+                return account ? account : this.name;
+            }*/
         },
         methods: {
             changeAsideStatus() {

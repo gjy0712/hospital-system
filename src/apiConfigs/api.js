@@ -1,6 +1,6 @@
 export default {
     timeout: 60 * 1000, // 超时请求时间，单位：毫秒
-    successStatusCode: 0,
+    successStatusCode: 1,
     prefix: {
         dev: '/',
         test: '/',
@@ -14,29 +14,12 @@ export default {
             login: '/user/login', // 登录
             register: '/user/register', // 注册
         },
-        appCenter: {
-
-        },
-        operationCenter: {
-
-        },
-        analysisCenter: {
-
-        },
-        serviceCenter: {
-
-        },
-        securityCenter:{
-
-        },
-        configCenter: {
-
-        },
-        CMDB: {
-
-        },
-        systemManage: {
-
+        // 患者模块
+        patient: {
+            // 首页
+            home: {
+                doctorList: '/doctor/getRecommendDoctor', // 推荐医生
+            }
         }
     }
 }

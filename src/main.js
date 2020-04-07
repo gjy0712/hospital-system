@@ -17,10 +17,11 @@ Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper)
 // Mock.start(); //并且执行初始化函数
 //这里要导入store
-import store from "./vuex/store";
+// import store from "./vuex/store";
+import store from '@/vuex/store'
 
 
-// 添加请求拦截器，在请求头中加token
+/*// 添加请求拦截器，在请求头中加token
 axios.interceptors.request.use(
     config => {
         if (localStorage.getItem('Authorization')) {
@@ -30,10 +31,10 @@ axios.interceptors.request.use(
     },
     error => {
         return Promise.reject(error);
-    });
+    });*/
 
 new Vue({
   router,
-  store:store,
+  store,
   render: h => h(App),
 }).$mount('#app')

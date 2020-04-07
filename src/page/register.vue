@@ -29,7 +29,7 @@
                     <el-input type="password" size="medium" v-model="registerForm.dbpassword" placeholder="请确认密码..."></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button size="medium"  @click="resetregisterForm('registerForm')">重置</el-button>
+                    <el-button size="medium"  @click="resetRegisterForm('registerForm')">重置</el-button>
                     <el-button size="medium" type="primary" class="registerBtn" @click="submitForm('registerForm')">注册</el-button>
                 </el-form-item>
                 <el-button type="text" class="register-tips" @click="handleLogin()">已有账号，去登录>></el-button>
@@ -41,6 +41,10 @@
 
 <script>
     import apiDataFilter from "../utils/apiDataFilter";
+    import {mapMutations} from "vuex";
+    import { getLocalStore, setLocalStore } from '@/utils/webstore-utils.js'
+    import { USER, TOKEN } from '@/config/webstore'
+    import {InfoMixins} from '@/components/mixins/publicMethods'
 
     export default {
         name: "register",
@@ -132,10 +136,11 @@
                     name: '',
                     // phone: '',
                     mail: '',
-                    userType: 'patient',
+                    // userType: 'patient',
                     password: '',
                     dbpassword: ''
                 },
+                userToken:'',
                 rules: {
                     account: [
                         {validator: validateAccount, trigger: 'blur' }
@@ -158,8 +163,11 @@
                 }
             }
         },
+        mixins: [InfoMixins],
         methods: {
-            submitForm(formName) {
+            ...mapMutations(['changeLogin']),
+            // 注册验证
+            async submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         apiDataFilter.request({
@@ -169,43 +177,43 @@
                                 account: this.registerForm.account,
                                 name: this.registerForm.name,
                                 email: this.registerForm.mail,
-                                password: this.registerForm.password
+                                password: this.registerForm.password,
                             },
                             successCallback: (res) => {
-                                if (res.code === '0') {
-                                    // 失败
-                                    this.$notify.error({
-                                        title: '失败',
-                                        message: res.msg
-                                    });
-                                } else {
-                                    // 成功
-                                    this.$notify.success({
-                                        title: '成功',
-                                        message: res.msg
-                                    });
-                                    this.$router.push('/login')
+                                // 成功
+                                this.$notify({
+                                    title: '成功',
+                                    message: '注册成功！',
+                                    type: "success"
+                                });
+                                let userInfo = {
+                                    account: this.registerForm.account,
+                                    name: this.registerForm.name,
+                                    email: this.registerForm.mail,
+                                    userType: 'PATIENT',
                                 }
+                                this.userToken = res.data;
+                                setLocalStore(TOKEN, this.userToken)
+                                setLocalStore(USER, userInfo)
+
+                                this.$router.push('/login')
                             },
                             errorCallback: (err) => {
-                                // console.log(err)
-                                // this.$message.error(err.data)
+                                // 失败
+                                this.$notify.error({
+                                    title: '失败',
+                                    message: err.data.msg
+                                });
                             },
                         })
                     }
-
-                    /*if (valid) {
-                        this.$message.success('注册成功，请登录');
-                        this.$router.push('/login');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }*/
                 });
             },
-            resetregisterForm(formName) {
+            //重置按钮
+            resetRegisterForm(formName) {
                 this.$refs[formName].resetFields();
             },
+            // 直接登录
             handleLogin() {
                 this.$router.push('/login')
             }
