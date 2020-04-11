@@ -45,13 +45,24 @@
 <!--        推荐医生-->
         <div class="box">
             <div class="box-title">推荐医生</div>
-            <el-row>
-                <el-col :span="4" v-for="(o, index) in doctorList" :key="o" :offset="index > 0 ? 2 : 0">
-                    <el-card :body-style="{ padding: '0px' }">
+            <el-row :gutter="20">
+                <el-col :span="4"
+                        v-for="(item, index) in doctorList"
+                        :key="index"
+                        :offset="index > 0 ? 2 : 0"
+                        style="margin-bottom:30px">
+                    <el-card :body-style="{ padding: '0px' }" class="recommend-card">
+                        <div class="save-picture">
+                            <img class="avatar-image" :src="item.picPath" alt="">
+                        </div>
+                        <h4>{{item.doctorName}}</h4>
 
+                        <el-divider></el-divider>
+                        <!--                        擅长-->
                     </el-card>
                 </el-col>
             </el-row>
+
         </div>
     </div>
 </template>
@@ -113,21 +124,21 @@
                 disableOnInteraction: false
             } : false;
             this.getDoctorList()
-                apiDataFilter.request({
-                    apiPath: 'patient.home.doctorList',
-                    method: 'post',
-                    data: '',
-                    successCallback : (res) => {
-                        console.log(res)
-                    }
-                })
         },
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
             },
             getDoctorList() {
-
+                apiDataFilter.request({
+                    apiPath: 'patient.home.doctorList',
+                    method: 'post',
+                    data: '',
+                    successCallback : (res) => {
+                        this.doctorList = res.data.doctorInfoList
+                        console.log(this.doctorList)
+                    }
+                })
             }
         }
     }
@@ -149,6 +160,25 @@
             .box-title {
                 margin-bottom: 10px;
                 font-size: 22px;
+            }
+            .recommend-card {
+                width: 250px;
+
+                .save-picture {
+                    padding: 10px;
+                    width: 100%;
+                    height: 120px;
+                    line-height: 60px;
+                    .flex();
+                    .justify-content(center);
+
+                    .avatar-image {
+                        display: inline-block;
+                        border-radius: 50%;
+                        width: 100px;
+                        height: 100px;
+                    }
+                }
             }
 
             .health-content {

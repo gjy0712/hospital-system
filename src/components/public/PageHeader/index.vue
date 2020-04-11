@@ -1,5 +1,7 @@
 <template>
-    <div class="page-header" :class="borderBottom ? 'bottom-line': ''"></div>
+    <div class="page-header" :class="borderBottom ? 'bottom-line' : ''">
+        <slot></slot>
+    </div>
 </template>
 
 <script>

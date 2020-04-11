@@ -145,6 +145,8 @@
 
     .sidebar-el-menu:not(.el-menu--collapse) {
         width: 250px;
+        height: 100%;
+
     }
 
     .sidebar > ul {

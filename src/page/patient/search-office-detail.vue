@@ -1,10 +1,11 @@
 <template>
-    <div class="search-office-container">
+    <div class="search-office-detail-container">
         <page-header :borderBottom="true">
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item>您当前所在的位置</el-breadcrumb-item>
                 <el-breadcrumb-item>按科室挂号</el-breadcrumb-item>
-                <el-breadcrumb-item>科室列表信息</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/searchOffice' }">科室列表信息</el-breadcrumb-item>
+                <el-breadcrumb-item>科室列表信息详情</el-breadcrumb-item>
             </el-breadcrumb>
         </page-header>
 
@@ -13,10 +14,10 @@
             <el-row>
                 <el-col :span="6">
                     <div class="grid-content">
-                        搜索科室：
-                        <el-input size="small" v-model="searchObj.departmentName"
+                        搜索医生：
+                        <el-input size="small" v-model="searchObj.doctorName"
                                   @keyup.enter.native="handleSearch"
-                                  placeholder="请输入科室名称"></el-input>
+                                  placeholder="请输入医生名称"></el-input>
                     </div>
                 </el-col>
                 <el-col :span="6">
@@ -30,16 +31,35 @@
 
         <!--账号列表-->
         <div class="content-box">
+            <div class="department-box">
+                <p class="department box-title">
+                    科室：
+                    <span></span>
+                </p>
+                <p class="department-description box-title">
+                    科室简介：
+                    <span></span>
+                </p>
+                <p class="department-total box-title">
+                    该科室下有
+                    <span class="total-number">{{dTotal}}</span>
+                    位医生
+                </p>
+            </div>
             <div class="table-box">
                 <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="departmentName" label="科室名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="医生数量"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="科室介绍" width="350"></el-table-column>
+                    <el-table-column prop="departmentName" label="头像"></el-table-column>
+                    <el-table-column prop="departmentName" label="医生名称"></el-table-column>
+                    <el-table-column prop="dNumber" label="性别"></el-table-column>
+                    <el-table-column prop="departmentDescription" label="职位"></el-table-column>
+                    <el-table-column prop="departmentDescription" label="年龄"></el-table-column>
+                    <el-table-column prop="departmentDescription" label="出诊费"></el-table-column>
+                    <el-table-column prop="departmentDescription" label="医生介绍"></el-table-column>
                     <el-table-column label="操作" width="80">
                         <template slot-scope="scope">
-                            <el-button @click="handleDetail(scope.row, scope.row.id)" type="primary" size="mini">
-                                详情
+                            <el-button @click="handleRegister(scope.row.id)" type="primary" size="mini">
+                                我要挂号
                             </el-button>
                         </template>
                     </el-table-column>
@@ -67,7 +87,7 @@
     import apiDataFilter from "../../utils/apiDataFilter";
 
     export default {
-        name: "search-office",
+        name: "search-office-detail",
         components: {
             PageHeader
         },
@@ -75,34 +95,17 @@
             return {
                 loading: false,
                 searchObj: {
-                    departmentName: ''
+                    doctorName: ''
                 },
-                tableData: [
-                    {
-                        id: 1,
-                        departmentName: '泌尿外科',
-                        dNumber: '4',
-                        departmentDescription: '泌尿外科是我们院的重点科室'
-                    },
-                    {
-                        id: 2,
-                        departmentName: '内科',
-                        dNumber: '5',
-                        departmentDescription: '内科是我们院的重点科室'
-                    },
-                    {
-                        id: 3,
-                        departmentName: '男科',
-                        dNumber: '2',
-                        departmentDescription: '男科是我们院的重点科室'
-                    },
-                ],
+                dTotal: '',
+                tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 0,
             }
         },
         created() {
+
             // this.getList()
         },
         methods: {
@@ -114,29 +117,18 @@
                 this.currentPage = val
                 this.getList()
             },
-            // 重置
             handleReset() {
                 this.searchObj = {
-                    departmentName: ''
+                    doctorName: ''
                 }
             },
-            // 搜索
             handleSearch() {
 
             },
-            // 详情
-            handleDetail(row, id) {
-                console.log(id)
-                this.$router.push({
-                    path: '/searchOfficeDetail',
-                    query: {
-                        departmentId: id,
-                        departmentName: row.departmentName,
-                        dNumber: row.dNumber,
-                        departmentDescription: row.departmentDescription
-                    }
-                })
+            handleRegister() {
+
             },
+
             getList() {
                 this.loading = true;
                 apiDataFilter.request({
@@ -150,7 +142,6 @@
                     },
                 })
             }
-
         }
     }
 </script>
@@ -158,12 +149,11 @@
 <style lang="less" scoped>
     @import "../../style/variables.less";
 
-    .search-office-container {
+    .search-office-detail-container {
         background-color: @default-color;
         padding-bottom: 20px;
 
         .search-box {
-            background-color: @gray-color;
             padding: 20px 0;
             margin-top: 20px;
 
@@ -184,6 +174,14 @@
 
         .content-box {
             padding: 20px;
+
+            .department-box {
+                background-color: @gray-color ;
+                margin-bottom: 20px;
+                .box-title {
+                    padding: 10px;
+                }
+            }
 
             .table-box {
 

@@ -2,14 +2,14 @@
     <div class="patient-home-container">
         <v-header></v-header>
         <patient-aside></patient-aside>
-        <div class="content-box" :class="{'content-collapse':collapse}">
-            <div class="content">
+        <div class="patient-content-box" :class="{'content-collapse':collapse}">
+            <div class="patient-content">
                 <transition name="move" mode="out-in">
                     <keep-alive >
                         <router-view></router-view>
                     </keep-alive>
                 </transition>
-                <el-backtop target=".content"></el-backtop>
+                <el-backtop target=".patient-content"></el-backtop>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
 <style lang="less" >
     @import "../../../style/variables";
     .patient-home-container {
-        .content-box {
+        .patient-content-box {
             position: absolute;
             left: 260px;
             right: 10px;
@@ -65,7 +65,7 @@
             background: @main-color;
         }
 
-        .content {
+        .patient-content {
             width: auto;
             height: 100%;
             padding: 10px;

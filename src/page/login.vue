@@ -4,7 +4,7 @@
             <div class="login-title">医院预约挂号系统</div>
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px" class="login-content">
                 <el-form-item prop="username">
-                    <el-input v-model="loginForm.username" placeholder="用户名">
+                    <el-input v-model="loginForm.username" placeholder="账号">
                         <el-button slot="prepend" icon="el-icon-user"></el-button>
                     </el-input>
                 </el-form-item>
@@ -94,7 +94,7 @@
                                     message: '登录成功！',
                                     type: "success"
                                 });
-                                this.$router.push('/');
+                                this.$router.push('/home');
 
                                 /*if (res.data.pwd_need_change) {
                                     this.notFirstLogin = false

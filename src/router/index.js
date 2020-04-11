@@ -8,7 +8,7 @@ Vue.use(Router)
 export const defaultRouterMap = [
     {
         path: '/',
-        redirect: '/home'
+        redirect: '/login'
     },
     {
         path: '/admin',
@@ -31,7 +31,7 @@ export const defaultRouterMap = [
 
     // 患者模块
     {
-        path: '/',
+        path: '/home',
         component: () => import('../components/component/patient/patient-home.vue'),
         meta: { title: '患者模块内容'},
         children: [
@@ -43,7 +43,15 @@ export const defaultRouterMap = [
             {
                 path: '/searchOffice',
                 component: () => import('../page/patient/search-office.vue'),
-                meta: { title: '按科室挂号' }
+                meta: { title: '按科室挂号' },
+            },
+            {
+                path: '/searchOfficeDetail',
+                component: () => import('../page/patient/search-office-detail.vue'),
+                meta: {
+                    title: '科室详情信息' ,
+                    IsActive: true,
+                }
             },
             {
                 path: '/searchDoctor',
