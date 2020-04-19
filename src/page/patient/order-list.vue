@@ -68,22 +68,23 @@
             }
         },
         mounted() {
+
+        },
+        created() {
             let userObj = JSON.parse(getLocalStore(USER))
             if (userObj) {
                 this.patientId = userObj.id
             }
-        },
-        created() {
             this.getRecordList()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getRecordList()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getRecordList()
             },
             // 分页获取患者预约记录
             getRecordList() {
@@ -92,9 +93,9 @@
                     apiPath: 'record.getRecordList',
                     method: 'post',
                     data: {
+                        patientId: this.patientId,
                         pageNum: this.currentPage,
                         pageSize: this.pageSize,
-                        patientId: this.patientId
                     },
                     successCallback: (res) => {
                         this.loading = false;

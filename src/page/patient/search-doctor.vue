@@ -31,15 +31,29 @@
         <!--账号列表-->
         <div class="content-box">
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
-                    <el-table-column prop="pic" label="头像"></el-table-column>
-                    <el-table-column prop="doctorName" label="医生名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="性别"></el-table-column>
-                    <el-table-column prop="doctorCareer" label="职位"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="年龄"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="出诊费"></el-table-column>
-                    <el-table-column prop="doctorDesc" label="医生介绍" width="230"></el-table-column>
-                    <el-table-column label="操作" width="80">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
+                    <el-table-column fixed type="index" label="序号" width="50"></el-table-column>
+                    <el-table-column prop="picpath" label="头像">
+                        <template  slot-scope="scope">
+                            <img :src="scope.row.picpath"  min-width="70" height="70"  alt=""/>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="医生名称"></el-table-column>
+                    <el-table-column prop="officeName" label="所属科室" width="120"></el-table-column>
+                    <el-table-column prop="career" label="职位"></el-table-column>
+                    <el-table-column prop="sex" label="性别"></el-table-column>
+                    <el-table-column prop="age" label="年龄">
+                        <template  slot-scope="scope">
+                            {{scope.row.age}} 岁
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="fee" label="出诊费">
+                        <template  slot-scope="scope">
+                            ￥{{scope.row.fee}}.0 元
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="description" label="医生介绍" width="180"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
                         <template slot-scope="scope">
                             <el-button @click="handleRegister(scope.row.id)" type="primary" size="mini">
                                 我要挂号
@@ -88,16 +102,16 @@
             };
         },
         created() {
-            this.getList()
+            this.getRecommendDoctor()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getRecommendDoctor()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getRecommendDoctor()
             },
             handleReset() {
                 this.searchObj = {
@@ -115,19 +129,24 @@
                     }
                 })
             },
-            getList() {
+            getRecommendDoctor() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'patient.doctorList',
+                    apiPath: 'doctor.getRecommendDoctor',
                     method: 'post',
-                    data: '',
+                    data: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
                     successCallback: (res) => {
                         this.loading = false;
-                        this.tableData = res.data.doctorInfoList
-
+                        if(res.data) {
+                            this.tableData = res.data.list
+                            this.pageTotal = res.data.total;
+                        }
                     },
                     errorCallback: (err) => {
-
+                        this.loading = false
                     },
                 })
             }

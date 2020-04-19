@@ -17,24 +17,30 @@
             <el-row :gutter="12">
                 <el-col :span="8" class="health-content">
                     <el-card shadow="hover">
-                        <div class="health-detail">
-                            <img src="../../assets/img/heath_1.jpg" alt="" width="120" height="90">
+                        <div class="health-detail" @click="handleRouterBaby()">
+                            <div style="display: inline-block">
+                                <img src="../../assets/img/heath_1.jpg" alt="" width="120px" height="90px">
+                            </div>
                             <p class="health-p">宝宝有O型腿/X型腿，是缺钙吗？需要矫正吗？3种情况别大意！</p>
                         </div>
                     </el-card>
                 </el-col>
                 <el-col :span="8" class="health-content">
                     <el-card shadow="hover">
-                        <div class="health-detail">
-                            <img src="../../assets/img/health_3.jpg" alt="" width="120px" height="90px">
+                        <div class="health-detail" @click="handleRouterGlass()">
+                            <div style="display: inline-block">
+                                <img src="../../assets/img/health_3.jpg" alt="" width="120px" height="90px">
+                            </div>
                             <p class="health-p">只是配个眼镜,却查出差点失明!忽视眼睛“年检”,当心这些风险</p>
                         </div>
                     </el-card>
                 </el-col>
                 <el-col :span="8" class="health-content">
                     <el-card shadow="hover">
-                        <div class="health-detail">
-                            <img src="../../assets/img/health_2.jpg" alt="" width="120" height="90">
+                        <div class="health-detail" @click="handleRouterHospital()">
+                            <div style="display: inline-block">
+                                <img src="../../assets/img/health_2.jpg" alt="" width="120px" height="90px">
+                            </div>
                             <p class="health-p">疫情不解除不敢上医院？免费申请家庭病床，在家就能看病！</p>
                         </div>
                     </el-card>
@@ -129,11 +135,26 @@
             handleClick(tab, event) {
                 // console.log(tab, event);
             },
+            // 宝宝
+            handleRouterBaby() {
+                window.open('https://www.yihu.com/article/show/b67406c4dc820d0d3c19c2d02791b23a.shtml') ;
+            },
+            // 眼睛的健康必读
+            handleRouterGlass() {
+                window.open('https://www.yihu.com/article/show/72ca5ee47bba260228cf7bd4a2dcafa6.shtml') ;
+            },
+            // 疫情
+            handleRouterHospital() {
+                window.open('https://www.yihu.com/article/show/158f1d05c08249376c02cb06eb1f1866.shtml') ;
+            },
             getDoctorList() {
                 apiDataFilter.request({
-                    apiPath: 'patient.doctorList',
+                    apiPath: 'doctor.getDoctor',
                     method: 'post',
-                    data: '',
+                    data: {
+                        pageNum: 1,
+                        pageSize: 10
+                    },
                     successCallback : (res) => {
                         this.doctorList = res.data.doctorInfoList
                         console.log(this.doctorList)

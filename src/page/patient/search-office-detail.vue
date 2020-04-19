@@ -34,29 +34,41 @@
             <div class="department-box">
                 <p class="department box-title">
                     科室：
-                    <span>{{departmentObj.departmentName}}</span>
+                    <span>{{departmentObj.officeName}}</span>
                 </p>
                 <p class="department-description box-title">
-                    科室简介：
-                    <span>{{departmentObj.departmentDescription}}</span>
+                    科室简介：我是属于
+                    <span>{{departmentObj.departmentDescription}}科室</span>
                 </p>
                 <p class="department-total box-title">
                     该科室下有
-                    <span class="total-number">{{departmentObj.dNumber}}</span>
+                    <span class="total-number">{{departmentObj.doctorNum}}</span>
                     位医生
                 </p>
             </div>
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
-                    <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="pic" label="头像"></el-table-column>
-                    <el-table-column prop="doctorName" label="医生名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="性别"></el-table-column>
-                    <el-table-column prop="doctorCareer" label="职位"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="年龄"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="出诊费"></el-table-column>
-                    <el-table-column prop="doctorDesc" label="医生介绍" width="230"></el-table-column>
-                    <el-table-column label="操作" width="80">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
+                    <el-table-column fixed type="index" label="序号" width="80"></el-table-column>
+                    <el-table-column prop="picpath" label="头像">
+                        <template  slot-scope="scope">
+                            <img :src="scope.row.picpath"  min-width="70" height="70" />
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="医生名称"></el-table-column>
+                    <el-table-column prop="sex" label="性别"></el-table-column>
+                    <el-table-column prop="career" label="职位"></el-table-column>
+                    <el-table-column prop="age" label="年龄">
+                        <template  slot-scope="scope">
+                            {{scope.row.age}} 岁
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="fee" label="出诊费">
+                        <template  slot-scope="scope">
+                            ￥{{scope.row.fee}}.0 元
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="description" label="医生介绍" width="180" ></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
                         <template slot-scope="scope">
                             <el-button @click="handleRegister(scope.row.id)" type="primary" size="mini">
                                 我要挂号
@@ -114,7 +126,7 @@
             this.departmentId = this.$route.query.id || '';
 
             this.departmentObj.officeName = this.$route.query.officeName || '';
-            this.departmentObj.departmentDescription = this.$route.query.departmentDescription || '';
+            this.departmentObj.departmentDescription = this.$route.query.officeName || '';
             this.departmentObj.doctorNum = this.$route.query.doctorNum || '';
             this.getList()
         },
@@ -156,9 +168,11 @@
                     },
                     successCallback: (res) => {
                         this.loading = false;
-                        // this.tableData = res.data.doctorInfoList
+                        this.tableData = res.data.list;
+                        this.pageTotal = res.data.total;
                     },
                     errorCallback: (err) => {
+                        this.loading = false;
                     },
                 })
             }
