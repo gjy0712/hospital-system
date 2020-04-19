@@ -103,7 +103,7 @@
             }
         },
         created() {
-            // this.getList()
+            this.getList()
         },
         methods: {
             handleSizeChange(val) {
@@ -137,12 +137,13 @@
                     }
                 })
             },
+            // 获取科室列表
             getList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'office.getUserList',
+                    apiPath: 'office.getOfficeList',
                     method: 'post',
-                    data: {departmentName: this.searchObj.departmentName},
+                    data: {},
                     successCallback: (res) => {
                         this.loading = false;
                         this.tableData = res.data.list;

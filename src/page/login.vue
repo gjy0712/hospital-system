@@ -77,17 +77,24 @@
                                 userType: this.loginForm.userType,
                             },
                             successCallback: (res) => {
-                                /*let userInfo = {
-                                    name: this.loginForm.username,
-                                    userType: this.loginForm.userType,
-                                }*/
-                                // Object.assign(param,userInfo)
-                                setLocalStore(TOKEN, res.data)
-                                // setLocalStore(USER, userInfo)
-                                // this.$router.push('/');
-                                this.userToken = res.data;
-                                // 将用户token保存到vuex中
-                                this.changeLogin({ Authorization:this.userToken });
+                                let userInfo = {
+                                    username: res.data.user.username,  // 账号
+                                    password: this.loginForm.password,  // 密码
+                                    id: res.data.user.id,   // id
+                                    name: res.data.user.name,  // 名称
+                                    email: res.data.user.email,  // 邮箱
+                                    fee: res.data.user.fee,   // 出诊费
+                                    sex: res.data.user.sex,   // 性别
+                                    age: res.data.user.age,   // 年龄
+                                    officeName: res.data.user.officeName,   // 科室名称
+                                    career: res.data.user.career,   // 职位
+                                    description: res.data.user.description,   // 职位
+                                    picpath: res.data.user.picpath,   // 职位
+                                }
+                                // 存储token和user
+                                let token = res.data.token
+                                setLocalStore(TOKEN, token)
+                                setLocalStore(USER, userInfo)
                                 // 成功
                                 this.$notify({
                                     title: '成功',
@@ -96,12 +103,6 @@
                                 });
                                 this.$router.push('/home');
 
-                                /*if (res.data.pwd_need_change) {
-                                    this.notFirstLogin = false
-                                    this.$refs['updatePasswordDialog_ref'].showDialog(true)
-                                } else {
-                                    this.$router.push('/')
-                                }*/
                             },
                             errorCallback: (err) => {
                                 // 失败

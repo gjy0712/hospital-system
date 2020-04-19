@@ -40,9 +40,9 @@
                                 <i class="el-icon-caret-bottom"></i>
                             </span>
                             <el-dropdown-menu size="medium" slot="dropdown">
-                                <el-dropdown-item command="userInfo">
-                                    <i class="el-icon-chat-line-round"/>
-                                    个人信息
+                                <el-dropdown-item command="help">
+                                    <i class="el-icon-question"/>
+                                    帮助
                                 </el-dropdown-item>
                                 <el-dropdown-item command="updatePassword">
                                     <i class="el-icon-lock"/>
@@ -78,8 +78,8 @@
     import UpdatePasswordDialog from "./update-password-dialog";
     import bus from '../bus';
     import { USER } from '@/config/webstore'
-    import { setSessionStore, getSessionStore, getLocalStore,} from '@/utils/webstore-utils'
-
+    import { setSessionStore, getSessionStore, getLocalStore,removeLocalStore} from '@/utils/webstore-utils'
+    import {TOKEN} from "../../../config/webstore";
 
     export default {
         name: "hospital-header",
@@ -96,7 +96,7 @@
         },
         mounted() {
             let userObj = JSON.parse(getLocalStore(USER))
-            console.log(userObj)
+            // console.log(userObj)
             if (userObj) {
                 // this.userType = userObj.userType
                 this.account = userObj.account || this.name
@@ -145,15 +145,15 @@
             // 退出登录
             handleCommand(index) {
                 switch(index) {
-                    case 'userInfo':
-                        this.dialogVisiable = true
+                    case 'help':
+                        this.$router.push('/home')
                         break
                     case 'updatePassword':
                         this.$refs['updatePassword_ref'].showDialog();
                         break
                     case 'loginOut':
                         //退出登录，清空token
-                        localStorage.removeItem('Authorization');
+                        removeLocalStore(TOKEN)
                         this.$router.push('/login');
                         /*localStorage.removeItem('ms_username');
                         this.$router.push('/login');*/

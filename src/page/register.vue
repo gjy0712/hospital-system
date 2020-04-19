@@ -174,7 +174,7 @@
                             apiPath: 'common.register',
                             method: 'post',
                             data: {
-                                account: this.registerForm.account,
+                                username: this.registerForm.account,
                                 name: this.registerForm.name,
                                 email: this.registerForm.mail,
                                 password: this.registerForm.password,

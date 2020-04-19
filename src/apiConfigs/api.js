@@ -14,9 +14,25 @@ export default {
             login: '/user/login', // 登录
             register: '/user/register', // 注册
         },
-        // 患者模块
-        patient: {
-            doctorList: '/doctor/getRecommendDoctor', // 医生列表
+        // 医生管理
+        doctor: {
+            getRecommendDoctor: '/doctor/getRecommendDoctor', //获取推荐医生信息
+            getDoctor: '/doctor/getDoctor', // 获取医生信息
+        },
+        // 科室管理
+        office: {
+            getOfficeList: '/office/getOfficeList',   // 获取科室列表
+            getOfficeDetailList: '/office/getOfficeDetailList', // 获取科室详情列表
+        },
+        // 工作日
+        workday: {
+            getWorkDay: '/workday/getWorkDay', //医生工作日
+
+        },
+        // 预约记录
+        record: {
+            insertRecord: '/record/insertRecord', // 患者新增预约记录
+            getRecordList: '/record/getRecordList', // 分页获取患者预约记录
         }
 
     }

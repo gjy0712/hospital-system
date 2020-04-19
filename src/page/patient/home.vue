@@ -123,15 +123,15 @@
                 stopOnLastSlide: false,
                 disableOnInteraction: false
             } : false;
-            this.getDoctorList()
+            // this.getDoctorList()
         },
         methods: {
             handleClick(tab, event) {
-                console.log(tab, event);
+                // console.log(tab, event);
             },
             getDoctorList() {
                 apiDataFilter.request({
-                    apiPath: 'patient.home.doctorList',
+                    apiPath: 'patient.doctorList',
                     method: 'post',
                     data: '',
                     successCallback : (res) => {

@@ -5,9 +5,7 @@
         <div class="doctor-content-box" :class="{'content-collapse':collapse}">
             <div class="doctor-content">
                 <transition name="move" mode="out-in">
-                    <keep-alive >
                         <router-view></router-view>
-                    </keep-alive>
                 </transition>
                 <el-backtop target=".doctor-content"></el-backtop>
             </div>
