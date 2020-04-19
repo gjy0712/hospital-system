@@ -100,6 +100,7 @@
                 this.searchObj = {
                     departmentName: ''
                 }
+                this.getOfficeList()
             },
             // 搜索
             handleSearch() {

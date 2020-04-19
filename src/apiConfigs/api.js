@@ -18,6 +18,7 @@ export default {
         doctor: {
             getRecommendDoctor: '/doctor/getRecommendDoctor', //获取推荐医生信息
             getDoctor: '/doctor/getDoctor', // 获取医生信息
+            searchDoctor: '/doctor/searchDoctor', //搜索医生
         },
         // 科室管理
         office: {

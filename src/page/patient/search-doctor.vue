@@ -117,9 +117,27 @@
                 this.searchObj = {
                     doctorName: ''
                 }
+                this.getRecommendDoctor()
             },
             handleSearch() {
-
+                this.loading = true;
+                apiDataFilter.request({
+                    apiPath: 'doctor.searchDoctor',
+                    method: 'POST',
+                    data: {
+                        docotrName: this.searchObj.doctorName,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
+                    successCallback: (res) => {
+                        this.loading = false;
+                        this.tableData = res.data.list
+                        this.pageTotal = res.data.total;
+                    },
+                    errorCallback: (err) => {
+                        this.loading = false
+                    }
+                })
             },
             handleRegister(did) {
                 this.$router.push({

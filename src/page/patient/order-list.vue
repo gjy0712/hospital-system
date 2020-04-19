@@ -10,14 +10,22 @@
         <!--账号列表-->
         <div class="content-box">
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号"></el-table-column>
                     <el-table-column prop="doctorName" label="医生名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="所属科室"></el-table-column>
-                    <el-table-column prop="doctorCareer" label="诊费"></el-table-column>
-                    <el-table-column prop="reserveTime" label="预约时间" width="180"></el-table-column>
-                    <el-table-column prop="treatmentTime" label="就诊时间"></el-table-column>
-                    <el-table-column prop="status" label="状态"></el-table-column>
+                    <el-table-column prop="doctorOffice" label="所属科室"></el-table-column>
+                    <el-table-column prop="fee" label="诊费">
+
+                    </el-table-column>
+                    <el-table-column prop="recordTime" label="预约时间" width="180"></el-table-column>
+                    <el-table-column prop="workTime" label="就诊时间"></el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template  slot-scope="scope">
+                            <el-tag v-if="scope.row.status=== 0" type="dander" disable-transitions>已拒绝</el-tag>
+                            <el-tag v-else-if="scope.row.status=== 1" type="success" disable-transitions>已同意</el-tag>
+                            <el-tag v-else type="warning" disable-transitions>待处理</el-tag>
+                        </template>
+                    </el-table-column>
                 </el-table>
 
                 <div class="pagination-box">
@@ -50,17 +58,7 @@
         },
         data() {
             return {
-                tableData: [
-                    {
-                        pic: '',
-                        doctorName: '陈胜良',
-                        dNumber: '消化内科',
-                        doctorCareer: '80',
-                        reserveTime: '2020-04-13 14:02:50',
-                        treatmentTime: '04-20 10:00',
-                        status: '预约成功'
-                    }
-                ],
+                tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 1,

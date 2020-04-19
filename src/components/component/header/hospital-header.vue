@@ -94,17 +94,14 @@
                 dialogVisiable: false,
             }
         },
-        mounted() {
+        computed: {
+
+        },
+        created() {
             let userObj = JSON.parse(getLocalStore(USER))
             if (userObj) {
                 this.account = userObj.name
             }
-        },
-        computed: {
-            /*account() {
-                let account = localStorage.getItem('USER');
-                return account ? account : this.name;
-            }*/
         },
         methods: {
             changeAsideStatus() {
