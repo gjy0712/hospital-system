@@ -98,9 +98,9 @@
                     doctorName: ''
                 },
                 departmentObj: {
-                    departmentName: '',
+                    officeName: '',
                     departmentDescription: '',
-                    dNumber: ''
+                    doctorNum: ''
                 },
                 dTotal: '',
                 tableData: [],
@@ -113,9 +113,9 @@
         created() {
             this.departmentId = this.$route.query.id || '';
 
-            this.departmentObj.departmentName = this.$route.query.departmentName || '';
+            this.departmentObj.officeName = this.$route.query.officeName || '';
             this.departmentObj.departmentDescription = this.$route.query.departmentDescription || '';
-            this.departmentObj.dNumber = this.$route.query.dNumber || '';
+            this.departmentObj.doctorNum = this.$route.query.doctorNum || '';
             this.getList()
         },
         methods: {
@@ -147,12 +147,14 @@
             getList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'patient.doctorList',
+                    apiPath: 'office.getOfficeDetailList',
                     method: 'post',
-                    data: '',
+                    data: {
+                        officeName: this.departmentObj.officeName
+                    },
                     successCallback: (res) => {
                         this.loading = false;
-                        this.tableData = res.data.doctorInfoList
+                        // this.tableData = res.data.doctorInfoList
                     },
                     errorCallback: (err) => {
                     },

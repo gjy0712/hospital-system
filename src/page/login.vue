@@ -90,6 +90,7 @@
                                     career: res.data.user.career,   // 职位
                                     description: res.data.user.description,   // 职位
                                     picpath: res.data.user.picpath,   // 职位
+                                    userType: this.loginForm.userType, // 类型
                                 }
                                 // 存储token和user
                                 let token = res.data.token

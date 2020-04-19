@@ -33,9 +33,9 @@
             <div class="table-box">
                 <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="departmentName" label="科室名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="医生数量"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="科室介绍" width="350"></el-table-column>
+                    <el-table-column prop="officeName" label="科室名称"></el-table-column>
+                    <el-table-column prop="doctorNum" label="医生数量"></el-table-column>
+<!--                    <el-table-column prop="departmentDescription" label="科室介绍" width="350"></el-table-column>-->
                     <el-table-column label="操作" width="80">
                         <template slot-scope="scope">
                             <el-button @click="handleDetail(scope.row, scope.row.id)" type="primary" size="mini">
@@ -77,26 +77,7 @@
                 searchObj: {
                     departmentName: ''
                 },
-                tableData: [
-                    {
-                        id: 1,
-                        departmentName: '泌尿外科',
-                        dNumber: '4',
-                        departmentDescription: '泌尿外科是我们院的重点科室'
-                    },
-                    {
-                        id: 2,
-                        departmentName: '内科',
-                        dNumber: '5',
-                        departmentDescription: '内科是我们院的重点科室'
-                    },
-                    {
-                        id: 3,
-                        departmentName: '男科',
-                        dNumber: '2',
-                        departmentDescription: '男科是我们院的重点科室'
-                    },
-                ],
+                tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 0,
@@ -131,9 +112,8 @@
                     path: '/searchOfficeDetail',
                     query: {
                         departmentId: id,
-                        departmentName: row.departmentName,
-                        dNumber: row.dNumber,
-                        departmentDescription: row.departmentDescription
+                        officeName: row.officeName,
+                        doctorNum: row.doctorNum,
                     }
                 })
             },
@@ -143,10 +123,14 @@
                 apiDataFilter.request({
                     apiPath: 'office.getOfficeList',
                     method: 'post',
-                    data: {},
+                    data: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
                     successCallback: (res) => {
                         this.loading = false;
-                        this.tableData = res.data.list;
+                        this.tableData = res.data.officeInfoList;
+                        this.pageTotal = res.data.total;
                     },
                     errorCallback: (err) => {
 
