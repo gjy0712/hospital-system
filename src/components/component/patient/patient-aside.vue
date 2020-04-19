@@ -63,6 +63,11 @@
                         title: '系统首页'
                     },
                     {
+                        icon: 'el-icon-chat-line-round',
+                        index: 'userInfo',
+                        title: '个人信息',
+                    },
+                    {
                         icon: 'el-icon-first-aid-kit',
                         index: 'searchOffice',
                         title: '按科室挂号'
@@ -76,40 +81,6 @@
                         icon: 'el-icon-time',
                         index: 'orderList',
                         title: '我的预约',
-                        /*subs: [
-                            {
-                                index: 'form',
-                                title: '基本表单'
-                            },
-                            {
-                                index: '3-2',
-                                title: '三级菜单',
-                                subs: [
-                                    {
-                                        index: 'editor',
-                                        title: '富文本编辑器'
-                                    },
-                                    {
-                                        index: 'markdown',
-                                        title: 'markdown编辑器'
-                                    }
-                                ]
-                            },
-                            {
-                                index: 'upload',
-                                title: '文件上传'
-                            }
-                        ]*/
-                    },
-                    {
-                      icon: 'el-icon-link',
-                      index: 'article',
-                      title: '健康必读'
-                    },
-                    {
-                        icon: 'el-icon-star-off',
-                        index: 'evaluation',
-                        title: '评价系统'
                     }
                 ]
             };

@@ -82,7 +82,7 @@
 
 
     export default {
-        name: "header",
+        name: "hospital-header",
         components: {UpdatePasswordDialog},
         data() {
             return {

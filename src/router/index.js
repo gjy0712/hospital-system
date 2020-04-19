@@ -41,6 +41,11 @@ export const defaultRouterMap = [
                 meta: { title: '系统首页' }
             },
             {
+                path: '/userInfo',
+                component: () => import('../page/patient/user-info.vue'),
+                meta: { title: '个人信息' }
+            },
+            {
                 path: '/searchOffice',
                 component: () => import('../page/patient/search-office.vue'),
                 meta: { title: '按科室挂号' },
@@ -54,6 +59,11 @@ export const defaultRouterMap = [
                 }
             },
             {
+                path: '/registration',
+                component: () => import('../page/patient/registration-info'),
+                meta: { title: '患者挂号' }
+            },
+            {
                 path: '/searchDoctor',
                 component: () => import('../page/patient/search-doctor.vue'),
                 meta: { title: '按医生挂号' }
@@ -62,16 +72,6 @@ export const defaultRouterMap = [
                 path: '/orderList',
                 component: () => import('../page/patient/order-list.vue'),
                 meta: { title: '我的预约' }
-            },
-            {
-                path: '/article',
-                component: () => import('../page/patient/article-list'),
-                meta: { title: '健康必读'}
-            },
-            {
-                path: '/evaluation',
-                component: () => import('../page/patient/evaluation-system.vue'),
-                meta: { title: '评价系统' }
             },
         ]
     },

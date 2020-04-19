@@ -7,6 +7,7 @@ import './plugins/element.js'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'vue-awesome-swiper/node_modules/swiper/dist/css/swiper.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import commonSchedule from 'common-schedule'
 import axios from 'axios' ;
 import Vuex from 'vuex' //引入状态管理
 Vue.prototype.$axios= axios ;
@@ -15,6 +16,7 @@ Vue.use(Vuex) ;
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper)
+Vue.use(commonSchedule)
 // Mock.start(); //并且执行初始化函数
 //这里要导入store
 // import store from "./vuex/store";

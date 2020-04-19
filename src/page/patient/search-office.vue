@@ -122,7 +122,7 @@
             },
             // 搜索
             handleSearch() {
-
+                this.getList()
             },
             // 详情
             handleDetail(row, id) {
@@ -140,13 +140,15 @@
             getList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'user.getUserList',
+                    apiPath: 'office.getUserList',
                     method: 'post',
-                    data: '',
+                    data: {departmentName: this.searchObj.departmentName},
                     successCallback: (res) => {
                         this.loading = false;
+                        this.tableData = res.data.list;
                     },
                     errorCallback: (err) => {
+
                     },
                 })
             }

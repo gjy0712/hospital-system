@@ -16,10 +16,8 @@ export default {
         },
         // 患者模块
         patient: {
-            // 首页
-            home: {
-                doctorList: '/doctor/getRecommendDoctor', // 推荐医生
-            }
+            doctorList: '/doctor/getRecommendDoctor', // 医生列表
         }
+
     }
 }

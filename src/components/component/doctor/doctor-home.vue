@@ -1,22 +1,22 @@
 <template>
     <div class="doctor-home-container">
-        <v-header></v-header>
+        <hospital-header></hospital-header>
         <doctor-aside></doctor-aside>
-        <div class="content-box" :class="{'content-collapse':collapse}">
-            <div class="content">
+        <div class="doctor-content-box" :class="{'content-collapse':collapse}">
+            <div class="doctor-content">
                 <transition name="move" mode="out-in">
                     <keep-alive >
                         <router-view></router-view>
                     </keep-alive>
                 </transition>
-                <el-backtop target=".content"></el-backtop>
+                <el-backtop target=".doctor-content"></el-backtop>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import vHeader from '../header/header'
+    import HospitalHeader from '../header/hospital-header'
     import DoctorAside from './doctor-aside'
     import bus from '../bus';
 
@@ -24,7 +24,7 @@
         name: "doctor-home",
         components: {
             DoctorAside,
-            vHeader
+            HospitalHeader
         },
         data() {
             return {
@@ -52,8 +52,8 @@
 <style lang="less">
     @import "../../../style/variables";
 
-    .patient-home-container {
-        .content-box {
+    .doctor-home-container {
+        .doctor-content-box {
             position: absolute;
             left: 260px;
             right: 10px;
@@ -65,7 +65,7 @@
             background: @main-color;
         }
 
-        .content {
+        .doctor-content {
             width: auto;
             height: 100%;
             padding: 10px;

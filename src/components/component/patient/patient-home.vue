@@ -1,6 +1,6 @@
 <template>
     <div class="patient-home-container">
-        <v-header></v-header>
+        <hospital-header></hospital-header>
         <patient-aside></patient-aside>
         <div class="patient-content-box" :class="{'content-collapse':collapse}">
             <div class="patient-content">
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import vHeader from '../header/header'
+    import HospitalHeader from '../header/hospital-header'
     import PatientAside from './patient-aside'
     import bus from '../bus';
 
@@ -25,7 +25,7 @@
         name: "patient-home",
         components: {
             PatientAside,
-            vHeader
+            HospitalHeader
         },
         data() {
             return {
@@ -50,7 +50,7 @@
     }
 </script>
 
-<style lang="less" >
+<style lang="less">
     @import "../../../style/variables";
     .patient-home-container {
         .patient-content-box {

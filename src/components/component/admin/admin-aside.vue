@@ -104,7 +104,7 @@
                     {
                         icon: 'el-icon-notebook-2',
                         index: 'applyManage',
-                        title: '排班信息管理'
+                        title: '排班申请管理'
                     }
                 ]
             };
@@ -124,7 +124,7 @@
     };
 </script>
 
-<style scoped lang="less">
+<style scoped>
     .sidebar {
         display: block;
         position: absolute;
@@ -140,6 +140,11 @@
 
     .sidebar-el-menu:not(.el-menu--collapse) {
         width: 250px;
+        height: 100%;
+
     }
 
+    .sidebar > ul {
+        height: 100%;
+    }
 </style>

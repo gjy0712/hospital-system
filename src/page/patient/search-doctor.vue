@@ -1,59 +1,173 @@
 <template>
     <div class="search-doctor-container">
-        我是按医生挂号
-        <!-- 绑定class，当items循环中的id等于我们设置的选中todoId时候,就会加上active这个calss,这样样式就会发生变化。-->
-        <a @click="goList(item.id)" class="list-todo list activeListClass" :class="{'active': item.id === todoId}" v-for="item in items">
-            <span class="icon-lock" v-if="item.locked"></span>
+        <page-header :borderBottom="true">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item>您当前所在的位置</el-breadcrumb-item>
+                <el-breadcrumb-item>按医生挂号</el-breadcrumb-item>
+                <el-breadcrumb-item>医生列表信息</el-breadcrumb-item>
+            </el-breadcrumb>
+        </page-header>
 
-            <span class="count-list" v-if="item.count > 0">{{item.count}}</span>
-            {{item.title}}
-        </a>
-        <a class=" link-list-new" @click="addTodoList">
-      <span class="icon-plus">
-      </span>
-            新增
-        </a>
+        <!--条件搜索-->
+        <div class="search-box">
+            <el-row>
+                <el-col :span="6">
+                    <div class="grid-content">
+                        搜索医生：
+                        <el-input size="small" v-model="searchObj.doctorName"
+                                  @keyup.enter.native="handleSearch"
+                                  placeholder="请输入医生名称"></el-input>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content">
+                        <el-button size="small" @click="handleReset" class="custom-button_long">重置</el-button>
+                        <el-button type="primary" size="small" @click="handleSearch" class="custom-button_long">搜索</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+
+        <!--账号列表-->
+        <div class="content-box">
+            <div class="table-box">
+                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
+                    <el-table-column prop="pic" label="头像"></el-table-column>
+                    <el-table-column prop="doctorName" label="医生名称"></el-table-column>
+                    <el-table-column prop="dNumber" label="性别"></el-table-column>
+                    <el-table-column prop="doctorCareer" label="职位"></el-table-column>
+                    <el-table-column prop="departmentDescription" label="年龄"></el-table-column>
+                    <el-table-column prop="departmentDescription" label="出诊费"></el-table-column>
+                    <el-table-column prop="doctorDesc" label="医生介绍" width="230"></el-table-column>
+                    <el-table-column label="操作" width="80">
+                        <template slot-scope="scope">
+                            <el-button @click="handleRegister(scope.row.id)" type="primary" size="mini">
+                                我要挂号
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <div class="pagination-box">
+                    <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-sizes="[10, 15, 20]"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="pageTotal"
+                            class="custom-pagination">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
-    // import { getTodoList, addTodo } from '../../api/api'; // 引入我们 封装好的两个接口函数。
+    import {PageHeader} from "../../components/public";
+    import apiDataFilter from "../../utils/apiDataFilter";
+
     export default {
         name: "search-doctor",
+        components: {
+            PageHeader
+        },
         data() {
             return {
-                items: [], // 菜单数据
-                todoId: '' // 默认选中id
+                loading: false,
+                searchObj: {
+                    doctorName: ''
+                },
+                tableData: [],
+                currentPage: 1,
+                pageSize: 10,
+                pageTotal: 0,
             };
         },
-        created() { // 调用请求菜单列表数据的接口
-            /*getTodoList({}).then(res => {
-                console.log(res)
-                const TODOS = res.data.todos; // 数据都会返回在res.data里面。
-                this.items = TODOS; // 我的把菜单数据赋值给定义的this.items
-                this.todoId = TODOS[0].id; // 把菜单数据的默认的第一个对象的id赋值给默认选中的id
-            });*/
+        created() {
+            this.getList()
         },
         methods: {
-            /*goList(id) { // 点击菜单时候,替换选中id
-                this.todoId = id;
-            },*/
-            /*addTodoList() { // 点击新增按钮时候
-                // 调用新增菜单的接口，在接口调用成功在请求数据
-                addTodo({}).then(data => {
-                    getTodoList({}).then(res => {
-                        const TODOS = res.data.todos;
-                        this.todoId = TODOS[TODOS.length - 1].id;
-                        this.items = TODOS;
-                    });
-                });
-            }*/
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.getList()
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val
+                this.getList()
+            },
+            handleReset() {
+                this.searchObj = {
+                    doctorName: ''
+                }
+            },
+            handleSearch() {
+
+            },
+            handleRegister(did) {
+                this.$router.push({
+                    path: '/registration',
+                    query: {
+                        did: did
+                    }
+                })
+            },
+            getList() {
+                this.loading = true;
+                apiDataFilter.request({
+                    apiPath: 'patient.doctorList',
+                    method: 'post',
+                    data: '',
+                    successCallback: (res) => {
+                        this.loading = false;
+                        this.tableData = res.data.doctorInfoList
+
+                    },
+                    errorCallback: (err) => {
+
+                    },
+                })
+            }
+
         }
     }
 </script>
 
 <style lang="less" scoped>
+    @import "../../style/variables.less";
     .search-doctor-container {
+        background-color: @default-color;
+        padding-bottom: 20px;
 
+        .search-box {
+            background-color: @gray-color;
+            padding: 20px 0;
+            margin-top: 20px;
+
+            .el-row {
+                padding-left: 20px;
+
+                .grid-content {
+                    color: @dark-font-color;
+
+                    .el-input,
+                    .el-select {
+                        display: inline-block;
+                        width: 60%;
+                    }
+                }
+            }
+        }
+
+        .content-box {
+            padding: 20px;
+
+            .table-box {
+
+            }
+        }
     }
 </style>

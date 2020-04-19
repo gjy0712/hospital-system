@@ -34,28 +34,28 @@
             <div class="department-box">
                 <p class="department box-title">
                     科室：
-                    <span></span>
+                    <span>{{departmentObj.departmentName}}</span>
                 </p>
                 <p class="department-description box-title">
                     科室简介：
-                    <span></span>
+                    <span>{{departmentObj.departmentDescription}}</span>
                 </p>
                 <p class="department-total box-title">
                     该科室下有
-                    <span class="total-number">{{dTotal}}</span>
+                    <span class="total-number">{{departmentObj.dNumber}}</span>
                     位医生
                 </p>
             </div>
             <div class="table-box">
                 <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="departmentName" label="头像"></el-table-column>
-                    <el-table-column prop="departmentName" label="医生名称"></el-table-column>
+                    <el-table-column prop="pic" label="头像"></el-table-column>
+                    <el-table-column prop="doctorName" label="医生名称"></el-table-column>
                     <el-table-column prop="dNumber" label="性别"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="职位"></el-table-column>
+                    <el-table-column prop="doctorCareer" label="职位"></el-table-column>
                     <el-table-column prop="departmentDescription" label="年龄"></el-table-column>
                     <el-table-column prop="departmentDescription" label="出诊费"></el-table-column>
-                    <el-table-column prop="departmentDescription" label="医生介绍"></el-table-column>
+                    <el-table-column prop="doctorDesc" label="医生介绍" width="230"></el-table-column>
                     <el-table-column label="操作" width="80">
                         <template slot-scope="scope">
                             <el-button @click="handleRegister(scope.row.id)" type="primary" size="mini">
@@ -97,16 +97,26 @@
                 searchObj: {
                     doctorName: ''
                 },
+                departmentObj: {
+                    departmentName: '',
+                    departmentDescription: '',
+                    dNumber: ''
+                },
                 dTotal: '',
                 tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 0,
+                departmentId: ''
             }
         },
         created() {
+            this.departmentId = this.$route.query.id || '';
 
-            // this.getList()
+            this.departmentObj.departmentName = this.$route.query.departmentName || '';
+            this.departmentObj.departmentDescription = this.$route.query.departmentDescription || '';
+            this.departmentObj.dNumber = this.$route.query.dNumber || '';
+            this.getList()
         },
         methods: {
             handleSizeChange(val) {
@@ -125,18 +135,24 @@
             handleSearch() {
 
             },
-            handleRegister() {
-
+            handleRegister(did) {
+                this.$router.push({
+                    path: '/registration',
+                    query: {
+                        did: did
+                    }
+                })
             },
 
             getList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'user.getUserList',
+                    apiPath: 'patient.doctorList',
                     method: 'post',
                     data: '',
                     successCallback: (res) => {
                         this.loading = false;
+                        this.tableData = res.data.doctorInfoList
                     },
                     errorCallback: (err) => {
                     },

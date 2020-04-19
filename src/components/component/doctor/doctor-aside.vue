@@ -95,7 +95,7 @@
     };
 </script>
 
-<style scoped lang="less">
+<style scoped>
     .sidebar {
         display: block;
         position: absolute;
@@ -107,13 +107,14 @@
     .sidebar::-webkit-scrollbar {
         width: 0;
     }
+
     .sidebar-el-menu:not(.el-menu--collapse) {
         width: 250px;
+        height: 100%;
+
     }
+
     .sidebar > ul {
         height: 100%;
-    }
-    .sidebar-el-menu:hover {
-        color: #409EFF;
     }
 </style>

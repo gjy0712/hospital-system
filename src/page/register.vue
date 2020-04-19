@@ -183,7 +183,7 @@
                                 // 成功
                                 this.$notify({
                                     title: '成功',
-                                    message: '注册成功！',
+                                    message: '注册成功，请登录！',
                                     type: "success"
                                 });
                                 let userInfo = {

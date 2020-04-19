@@ -1,22 +1,22 @@
 <template>
     <div class="admin-home-container">
-        <v-header></v-header>
+        <hospital-header></hospital-header>
         <admin-aside></admin-aside>
-        <div class="content-box" :class="{'content-collapse':collapse}">
-            <div class="content">
+        <div class="admin-content-box" :class="{'content-collapse':collapse}">
+            <div class="admin-content">
                 <transition name="move" mode="out-in">
                     <keep-alive :include="tagsList">
                         <router-view></router-view>
                     </keep-alive>
                 </transition>
-                <el-backtop target=".content"></el-backtop>
+                <el-backtop target=".admin-content"></el-backtop>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import vHeader from '../header/header'
+    import HospitalHeader from '../header/hospital-header'
     import AdminAside from './admin-aside'
     import bus from '../bus';
 
@@ -25,7 +25,7 @@
         name: "admin-home",
         components: {
             AdminAside,
-            vHeader
+            HospitalHeader
         },
         data() {
             return {
@@ -54,7 +54,7 @@
     @import "../../../style/variables";
 
     .admin-home-container {
-        .content-box {
+        .admin-content-box {
             position: absolute;
             left: 260px;
             right: 10px;
@@ -66,7 +66,7 @@
             background: @main-color;
         }
 
-        .content {
+        .admin-content {
             width: auto;
             height: 100%;
             padding: 10px;
