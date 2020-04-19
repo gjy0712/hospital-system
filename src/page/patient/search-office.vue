@@ -31,7 +31,7 @@
         <!--账号列表-->
         <div class="content-box">
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
                     <el-table-column prop="officeName" label="科室名称"></el-table-column>
                     <el-table-column prop="doctorNum" label="医生数量"></el-table-column>
@@ -84,16 +84,16 @@
             }
         },
         created() {
-            this.getList()
+            this.getOfficeList()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getOfficeList()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getOfficeList()
             },
             // 重置
             handleReset() {
@@ -103,11 +103,10 @@
             },
             // 搜索
             handleSearch() {
-                this.getList()
+                this.getOfficeList()
             },
             // 详情
             handleDetail(row, id) {
-                console.log(id)
                 this.$router.push({
                     path: '/searchOfficeDetail',
                     query: {
@@ -118,7 +117,7 @@
                 })
             },
             // 获取科室列表
-            getList() {
+            getOfficeList() {
                 this.loading = true;
                 apiDataFilter.request({
                     apiPath: 'office.getOfficeList',
@@ -129,7 +128,7 @@
                     },
                     successCallback: (res) => {
                         this.loading = false;
-                        this.tableData = res.data.officeInfoList;
+                        this.tableData = res.data.list;
                         this.pageTotal = res.data.total;
                     },
                     errorCallback: (err) => {

@@ -40,6 +40,8 @@
 <script>
     import { PageHeader } from '../../components/public'
     import apiDataFilter from "../../utils/apiDataFilter";
+    import {getLocalStore} from "../../utils/webstore-utils";
+    import { USER } from '@/config/webstore'
 
     export default {
         name: "order-list",
@@ -62,10 +64,17 @@
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 1,
+                patientId: ''
+            }
+        },
+        mounted() {
+            let userObj = JSON.parse(getLocalStore(USER))
+            if (userObj) {
+                this.patientId = userObj.id
             }
         },
         created() {
-            // this.getList()
+            this.getRecordList()
         },
         methods: {
             handleSizeChange(val) {
@@ -76,14 +85,16 @@
                 this.currentPage = val
                 this.getList()
             },
-            getList() {
+            // 分页获取患者预约记录
+            getRecordList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'patient.getRecordList',
+                    apiPath: 'record.getRecordList',
                     method: 'post',
                     data: {
                         pageNum: this.currentPage,
-                        pageSize: this.pageSize
+                        pageSize: this.pageSize,
+                        patientId: this.patientId
                     },
                     successCallback: (res) => {
                         this.loading = false;
@@ -92,6 +103,7 @@
                     },
                     errorCallback: (err) => {
                         this.$message.error('数据加载失败，请重试！')
+                        this.loading = false;
                     },
                 })
             }

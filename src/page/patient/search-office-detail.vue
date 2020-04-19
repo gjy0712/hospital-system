@@ -150,7 +150,9 @@
                     apiPath: 'office.getOfficeDetailList',
                     method: 'post',
                     data: {
-                        officeName: this.departmentObj.officeName
+                        officeName: this.departmentObj.officeName,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
                     },
                     successCallback: (res) => {
                         this.loading = false;
