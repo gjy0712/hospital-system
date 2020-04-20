@@ -44,7 +44,6 @@ export default {
             insertApply: '/apply/insertApply', //申请工作日
             deleteApply: '/apply/deleteApply', //取消申请工作日
 
-
         }
 
     }

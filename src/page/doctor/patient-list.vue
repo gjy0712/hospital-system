@@ -12,10 +12,37 @@
             <div class="table-box">
                 <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="reserveTime" label="预约时间"></el-table-column>
-                    <el-table-column prop="treatmentTime" label="就诊时间"></el-table-column>
-                    <el-table-column prop="pName" label="患者名称"></el-table-column>
-                    <el-table-column prop="reserveSituation" label="预约状况"></el-table-column>
+                    <el-table-column prop="recordTime" label="预约时间" width="200"></el-table-column>
+                    <el-table-column prop="workTime,period" label="就诊时间" width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.workTime}} {{scope.row.period}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="patientName" label="患者名称"></el-table-column>
+                    <el-table-column prop="status" label="预约状况">
+                        <template slot-scope="scope">
+                            <el-tag v-if="scope.row.status=== 0" type="dander" disable-transitions>已拒绝</el-tag>
+                            <el-tag v-else-if="scope.row.status=== 1" type="success" disable-transitions>已同意</el-tag>
+                            <el-tag v-else type="warning" disable-transitions>待处理</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column width="200" label="操作">
+                        <template slot-scope="scope">
+                            <el-button :disabled="scope.row.status=== 0 || scope.row.status=== 1"
+                                       @click="handleApprove(scope.row, scope.row.id)"
+                                        :loading="loading"
+                                       size="mini">
+                                同意
+                            </el-button>
+                            <el-button :disabled="scope.row.status=== 0 || scope.row.status=== 1"
+                                       @click="handleRefuse(scope.row, scope.row.id)"
+                                       type="danger"
+                                       :loading="loading"
+                                       size="mini">
+                                拒绝
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
 
                 <div class="pagination-box">
@@ -38,6 +65,8 @@
 <script>
     import { PageHeader } from '../../components/public'
     import apiDataFilter from "../../utils/apiDataFilter";
+    import {getLocalStore} from "../../utils/webstore-utils";
+    import {USER} from "../../config/webstore";
 
     export default {
         name: "patient-list",
@@ -61,31 +90,99 @@
             }
         },
         created() {
-            // this.getList()
+            let userObj = JSON.parse(getLocalStore(USER))
+            this.doctorId = userObj.id
+
+            this.getRecordList()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getRecordList()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getRecordList()
             },
-            /*handleCancel() {
+            // 同意预约
+            handleApprove(row,id) {
+                this.$confirm(
+                    "您确认要同意该预约吗？",
+                    "提示",
+                    {
+                        confirmButtonText: "确认",
+                        cancelButtonText: "取消",
+                        type: 'warning'
+                    }
+                ).then(() => {
+                    apiDataFilter.request({
+                        apiPath: 'record.updateRecord',
+                        method: 'POST',
+                        data: {
+                            status: 1,
+                            recordId: id
+                        },
+                        successCallback: (res)=> {
+                            this.$message.success('同意该预约')
+                            this.getRecordList()
+                        },
+                        errorCallback: (res) => {
+                            this.$message.error('同意该预约')
+                            this.getRecordList()
 
-            },*/
 
-            getList() {
-                this.loading = true;
+                        }
+                    })
+                })
+            },
+            // 拒绝预约
+            handleRefuse(row, id){
+                this.$confirm(
+                    "您确认要拒绝该预约吗？",
+                    "提示",
+                    {
+                        confirmButtonText: "确认",
+                        cancelButtonText: "取消",
+                        type: 'warning'
+                    }
+                ).then(() => {
+                    apiDataFilter.request({
+                        apiPath: 'record.updateRecord',
+                        method: 'POST',
+                        data: {
+                            status: 0,
+                            recordId: id
+                        },
+                        successCallback: (res)=> {
+                            this.$message.success('拒绝该预约成功')
+                            this.getRecordList()
+                        },
+                        errorCallback: (res) => {
+                            this.$message.error('拒绝该预约失败')
+                            this.getRecordList()
+                        }
+                    })
+                })
+            },
+            getRecordList() {
+                this.loading = false;
                 apiDataFilter.request({
-                    apiPath: 'user.getUserList',
+                    apiPath: 'record.getDoctorRecordList',
                     method: 'post',
-                    data: '',
+                    data: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize,
+                        doctorId: this.doctorId
+                    },
                     successCallback: (res) => {
-                        this.loading = false;
+                        this.loading = false
+                        if(res.data) {
+                            this.tableData = res.data.list;
+                            this.pageTotal = res.data.total;
+                        }
                     },
                     errorCallback: (err) => {
+                        this.loading = false
                     },
                 })
             }

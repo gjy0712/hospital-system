@@ -94,7 +94,7 @@
                     career: ''
                 },
                 doctorId: '',
-                tableData: '',
+                tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 0,
@@ -156,7 +156,7 @@
                             // 失败
                             this.$notify.error({
                                 title: '失败',
-                                message: '预约失败'
+                                message: err.data.msg
                             });
                         },
                     })

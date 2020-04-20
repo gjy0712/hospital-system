@@ -17,9 +17,9 @@
                     <el-table-column prop="applyResult" label="申请原因" width="200"></el-table-column>
                     <el-table-column prop="applySituation" label="申请情况"></el-table-column>
                     <el-table-column prop="applyStatus" label="状态"></el-table-column>
-                    <el-table-column label="操作" width="80">
+                    <el-table-column label="操作" width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleCancel(scope.row, scope.row.id)" type="danger" size="mini">
+                            <el-button @click="handleCancel(scope.row.id)" type="danger" size="mini">
                                 取消申请
                             </el-button>
                         </template>
@@ -46,6 +46,8 @@
 <script>
     import { PageHeader } from '../../components/public'
     import apiDataFilter from "../../utils/apiDataFilter";
+    import { USER } from '@/config/webstore'
+    import { getLocalStore } from '@/utils/webstore-utils'
 
     export default {
         name: "my-apply",
@@ -55,49 +57,79 @@
         data() {
             return {
                 loading: false,
-                tableData: [
-                    {
-                        applyTime: '04-20 13-34',
-                        applyDay: '04-23 周四',
-                        applyResult: '家中有事，申请和同事调班',
-                        applySituation: '申请停诊',
-                        applyStatus: '已同意'
-                    }
-                ],
+                tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 1,
-                id: ''
+                doctorId: ''
             }
         },
         created() {
-            // this.getList()
+            let userObj = JSON.parse(getLocalStore(USER))
+            this.doctorId = userObj.id
+
+            this.getApply()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getApply()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getApply()
             },
-            handleCancel() {
+            // 删除申请
+            handleCancel(id) {
+                this.$confirm(
+                    "您确认要取消申请吗？",
+                    "提示",
+                    {
+                        confirmButtonText: "确认",
+                        cancelButtonText: "取消",
+                        type: 'warning'
+                    }
+                ).then(() => {
+                    apiDataFilter.request({
+                        apiPath: 'message.deleteMessage',
+                        method: 'POST',
+                        data: {
+                            applyId: id
+                        },
+                        successCallback: (res)=> {
+                            this.$message.success('取消申请成功')
+                            this.getApply()
+                        },
+                        errorCallback: (res) => {
+                            this.$message.error('取消申请失败')
+                            this.getApply()
 
+
+                        }
+                    })
+                })
             },
 
-            getList() {
+            getApply() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'user.getApplyList',
+                    apiPath: 'apply.getApply',
                     method: 'post',
                     data: {
-                        dId: this.id
+                        doctorId: this.id,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize,
                     },
                     successCallback: (res) => {
                         this.loading = false;
+                        if(res.data) {
+                            this.tableData = res.data.list;
+                            this.pageTotal = res.data.total;
+                        }
                     },
                     errorCallback: (err) => {
+                        this.loading = false;
+
                     },
                 })
             }

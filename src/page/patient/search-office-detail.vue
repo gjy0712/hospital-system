@@ -127,26 +127,45 @@
             this.departmentObj.officeName = this.$route.query.officeName || '';
             this.departmentObj.departmentDescription = this.$route.query.officeName || '';
             // this.departmentObj.doctorNum = this.$route.query.doctorNum || '';
-            this.getList()
+
+            this.getOfficeDetailList()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getOfficeDetailList()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getOfficeDetailList()
             },
             handleReset() {
                 this.searchObj = {
                     doctorName: ''
                 }
+                this.getOfficeDetailList()
             },
             handleSearch() {
-
+                this.loading = true;
+                apiDataFilter.request({
+                    apiPath: 'doctor.searchDoctor',
+                    method: 'POST',
+                    data: {
+                        docotrName: this.searchObj.doctorName,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
+                    successCallback: (res) => {
+                        this.loading = false;
+                        this.tableData = res.data.list
+                        this.pageTotal = res.data.total;
+                    },
+                    errorCallback: (err) => {
+                        this.loading = false
+                    }
+                })
             },
-            handleDetail(row, id) {
+            handleDetail(id, row) {
                 this.$router.push({
                     path: '/registration',
                     query: {
@@ -156,7 +175,7 @@
                 })
             },
 
-            getList() {
+            getOfficeDetailList() {
                 this.loading = true;
                 apiDataFilter.request({
                     apiPath: 'office.getOfficeDetailList',

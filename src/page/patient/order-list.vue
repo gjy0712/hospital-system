@@ -18,7 +18,11 @@
 
                     </el-table-column>
                     <el-table-column prop="recordTime" label="预约时间" width="180"></el-table-column>
-                    <el-table-column prop="workTime" label="就诊时间"></el-table-column>
+                    <el-table-column prop="workTime,period" label="就诊时间" width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.workTime}} {{scope.row.period}}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="status" label="状态">
                         <template  slot-scope="scope">
                             <el-tag v-if="scope.row.status=== 0" type="dander" disable-transitions>已拒绝</el-tag>
