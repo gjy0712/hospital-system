@@ -33,7 +33,40 @@
             </div>
 
             <div class="table-box">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
+                    <el-table-column fixed type="index" label="序号" width="80"></el-table-column>
+                    <el-table-column prop="period" label="时间"></el-table-column>
+                    <el-table-column prop="workTime" label="工作日"></el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template slot-scope="scope">
+                            <el-tag v-if="scope.row.status=== 0" type="danger" disable-transitions>停诊</el-tag>
+                            <el-tag v-else type="success" disable-transitions>出诊</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="handleRegister(scope.row.id, scope.row)"
+                                       :disabled="scope.row.status=== 0"
+                                       type="primary"
+                                       size="mini">
+                                挂号
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
 
+                <div class="pagination-box">
+                    <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-sizes="[10, 15, 20]"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="pageTotal"
+                            class="custom-pagination">
+                    </el-pagination>
+                </div>
             </div>
         </div>
     </div>
@@ -42,6 +75,8 @@
 <script>
     import { PageHeader } from '../../components/public'
     import apiDataFilter from "../../utils/apiDataFilter";
+    import { USER } from '@/config/webstore'
+    import { getLocalStore } from '@/utils/webstore-utils'
 
     export default {
         name: "registration-dialog",
@@ -50,6 +85,7 @@
         },
         data() {
             return {
+                loading: false,
                 doctorInfo: {
                     picpath: '',
                     name: '',
@@ -57,17 +93,75 @@
                     description: '',
                     career: ''
                 },
-                doctorId: ''
+                doctorId: '',
+                tableData: '',
+                currentPage: 1,
+                pageSize: 10,
+                pageTotal: 0,
+                patientId: '',
+                patientName: ''
             }
         },
         created() {
+            let userObj = JSON.parse(getLocalStore(USER))
+            if (userObj) {
+                this.patientId = userObj.id;
+                this.patientName = userObj.name
+            }
             this.doctorInfo = this.$route.query.doctorInfo || '';
             this.doctorId = this.$route.query.id
 
             this.getWorkDay()
         },
         methods: {
-
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.getWorkDay()
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val
+                this.getWorkDay()
+            },
+            // 预约挂号
+            handleRegister(id, row) {
+                this.$confirm(
+                    "您确认要预约该医生吗？",
+                    "提示",
+                    {
+                        confirmButtonText: "确认",
+                        cancelButtonText: "取消",
+                        type: 'warning'
+                    }
+                ).then(() => {
+                    apiDataFilter.request({
+                        apiPath: 'record.insertRecord',
+                        method: 'post',
+                        data: {
+                            patientId: this.patientId,
+                            patientName: this.patientName,
+                            workdayId: id,
+                            doctorId: row.doctorId,
+                            workTime: row.workTime,
+                            period: row.period,
+                        },
+                        successCallback: (res) => {
+                            // 成功
+                            this.$notify({
+                                title: '成功',
+                                message: '预约成功',
+                                type: "success"
+                            });
+                        },
+                        errorCallback: (err) => {
+                            // 失败
+                            this.$notify.error({
+                                title: '失败',
+                                message: '预约失败'
+                            });
+                        },
+                    })
+                })
+            },
             getWorkDay() {
                 apiDataFilter.request({
                     apiPath: 'workday.getWorkDay',
@@ -126,6 +220,10 @@
                     vertical-align: middle;
                     margin: 0 200px;
                 }
+            }
+
+            .table-box {
+                margin-top: 20px;;
             }
 
         }

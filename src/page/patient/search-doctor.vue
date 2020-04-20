@@ -55,8 +55,8 @@
                     <el-table-column prop="description" label="医生介绍" width="180"></el-table-column>
                     <el-table-column fixed="right" label="操作" width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleRegister(scope.row, scope.row.id)" type="primary" size="mini">
-                                我要挂号
+                            <el-button @click="handleDetail(scope.row, scope.row.id)" type="primary" size="mini">
+                                医生详情
                             </el-button>
                         </template>
                     </el-table-column>
@@ -139,7 +139,7 @@
                     }
                 })
             },
-            handleRegister(row, id) {
+            handleDetail(row, id) {
                 this.$router.push({
                     path: '/registration',
                     query: {

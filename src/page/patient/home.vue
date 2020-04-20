@@ -129,7 +129,7 @@
                 stopOnLastSlide: false,
                 disableOnInteraction: false
             } : false;
-            // this.getDoctorList()
+            this.getRecommendDoctor()
         },
         methods: {
             handleClick(tab, event) {
@@ -147,17 +147,19 @@
             handleRouterHospital() {
                 window.open('https://www.yihu.com/article/show/158f1d05c08249376c02cb06eb1f1866.shtml') ;
             },
-            getDoctorList() {
+            getRecommendDoctor() {
                 apiDataFilter.request({
-                    apiPath: 'doctor.getDoctor',
+                    apiPath: 'doctor.getRecommendDoctor',
                     method: 'post',
                     data: {
                         pageNum: 1,
                         pageSize: 10
                     },
                     successCallback : (res) => {
-                        this.doctorList = res.data.doctorInfoList
-                        console.log(this.doctorList)
+                        if(res.data) {
+                            this.doctorList = res.data.list
+
+                        }
                     }
                 })
             }
