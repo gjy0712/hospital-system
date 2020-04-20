@@ -116,7 +116,7 @@
                     apiPath: 'apply.getApply',
                     method: 'post',
                     data: {
-                        doctorId: this.id,
+                        doctorId: this.doctorId,
                         pageNum: this.currentPage,
                         pageSize: this.pageSize,
                     },
