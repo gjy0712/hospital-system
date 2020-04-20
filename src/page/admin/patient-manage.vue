@@ -11,7 +11,7 @@
         <div class="content-box">
             <div class="table-box">
                 <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
-                    <el-table-column type="index" label="序号" width="80"></el-table-column>
+                    <el-table-column type="index" label="序号"></el-table-column>
                     <el-table-column prop="username" label="账号"></el-table-column>
                     <el-table-column prop="name" label="名称"></el-table-column>
                     <el-table-column prop="email" label="邮箱"></el-table-column>

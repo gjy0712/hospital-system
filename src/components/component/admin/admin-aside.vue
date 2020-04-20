@@ -58,11 +58,6 @@
                 collapse: false,
                 items: [
                     {
-                        icon: 'el-icon-document',
-                        index: 'info',
-                        title: '基本信息'
-                    },
-                    {
                         icon: 'el-icon-user-solid\n',
                         index: 'doctorManage',
                         title: '医生信息管理'

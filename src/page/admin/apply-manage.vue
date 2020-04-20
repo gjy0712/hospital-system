@@ -10,21 +10,21 @@
         <div class="content-box">
             <div class="table-box">
                 <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
-                    <el-table-column type="index" label="序号"></el-table-column>
+                    <el-table-column type="index" fixed label="序号" width="50"></el-table-column>
                     <el-table-column prop="doctorName" label="申请医生"></el-table-column>
-                    <el-table-column prop="request" label="申请情况">
+                    <el-table-column prop="request" label="申请情况" width="150">
                         <template slot-scope="scope">
                             <el-tag v-if="scope.row.request=== '0'" type="danger" disable-transitions>申请停诊</el-tag>
                             <el-tag v-else type="success" disable-transitions>申请出诊</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="workTime,period" label="日期">
+                    <el-table-column prop="workTime,period" label="日期" width="200">
                         <template slot-scope="scope">
                             {{scope.row.workTime}} {{scope.row.period}}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="applyTime" label="申请时间"></el-table-column>
-                    <el-table-column prop="reason" label="原因"></el-table-column>
+                    <el-table-column prop="applyTime" label="申请时间" width="180"></el-table-column>
+                    <el-table-column prop="reason" label="原因" width="220"></el-table-column>
                     <el-table-column prop="departmentDescription" label="状态">
                         <template slot-scope="scope">
                             <el-tag v-if="scope.row.status=== 0" type="danger" disable-transitions>已拒绝</el-tag>
@@ -32,7 +32,7 @@
                             <el-tag v-else type="warning" disable-transitions>待处理</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column width="200" label="操作">
+                    <el-table-column fixed="right" width="150" label="操作">
                         <template slot-scope="scope">
                             <el-button :disabled="scope.row.status=== 0 || scope.row.status=== 1"
                                        @click="handleApprove(scope.row, scope.row.id)"
@@ -101,7 +101,7 @@
                 this.getAllApply()
             },
             // 同意预约
-            handleApprove(row,id) {
+            handleApprove(row, id) {
                 this.$confirm(
                     "您确认要同意该医生的申请信息吗？",
                     "提示",
@@ -112,21 +112,19 @@
                     }
                 ).then(() => {
                     apiDataFilter.request({
-                        apiPath: 'record.updateRecord',
+                        apiPath: 'apply.updateApply',
                         method: 'POST',
                         data: {
                             status: 1,
-                            recordId: id
+                            workdayId: row.workdayId
                         },
                         successCallback: (res)=> {
                             this.$message.success('同意该申请成功')
-                            this.getRecordList()
+                            this.getAllApply()
                         },
                         errorCallback: (res) => {
                             this.$message.error('同意该申请失败')
-                            this.getRecordList()
-
-
+                            this.getAllApply()
                         }
                     })
                 })
@@ -134,7 +132,7 @@
             // 拒绝预约
             handleRefuse(row, id){
                 this.$confirm(
-                    "您确认要拒绝该预约吗？",
+                    "您确认要拒绝该医生的申请吗？",
                     "提示",
                     {
                         confirmButtonText: "确认",
@@ -143,19 +141,19 @@
                     }
                 ).then(() => {
                     apiDataFilter.request({
-                        apiPath: 'record.updateRecord',
+                        apiPath: 'apply.updateApply',
                         method: 'POST',
                         data: {
                             status: 0,
-                            recordId: id
+                            workdayId: row.workdayId
                         },
                         successCallback: (res)=> {
-                            this.$message.success('拒绝该预约成功')
-                            this.getRecordList()
+                            this.$message.success('拒绝该申请成功')
+                            this.getAllApply()
                         },
                         errorCallback: (res) => {
-                            this.$message.error('拒绝该预约失败')
-                            this.getRecordList()
+                            this.$message.error('拒绝该申请失败')
+                            this.getAllApply()
                         }
                     })
                 })
@@ -192,5 +190,8 @@
     .apply-manage-container {
         background-color: @default-color;
         padding-bottom: 20px;
+        .table-box {
+            padding-top: 20px;
+        }
     }
 </style>
