@@ -18,9 +18,9 @@
                 <el-form-item label="名称：" prop="name">
                     <el-input v-model.trim="dataInfo.name" placeholder="请输入科室名称"></el-input>
                 </el-form-item>
-                <el-form-item label="介绍：" prop="description">
+                <!--<el-form-item label="介绍：" prop="description">
                     <el-input type="textarea" v-model.trim="dataInfo.description" placeholder="请输入签名"></el-input>
-                </el-form-item>
+                </el-form-item>-->
             </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -75,39 +75,36 @@
             },
             handleSubmit() {
                 this.$refs['info'].validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.loading = true;
                         apiDataFilter.request({
-                            apiPath: 'user.updateUser',
+                            apiPath: 'office.insertOffice',
                             method: 'post',
                             data: {
-                                id: this.id,
-                                name: this.userInfo.name,
-                                email: this.userInfo.email,
-                                phone: this.userInfo.phone,
-                                description: this.userInfo.description
+                                officeName: this.dataInfo.name
                             },
                             successCallback: (res) => {
                                 this.loading = false;
                                 // 成功
                                 this.$notify({
                                     title: '成功',
-                                    message: '编辑成功',
+                                    message: '添加成功',
                                     type: "success"
                                 });
-                                this.dialogEditInfo = false
+                                this.dialogAddDepartment = false
+                                this.$emit('getOfficeList')
                             },
                             errorCallback: (err) => {
                                 this.loading = false
                                 // 失败
                                 this.$notify.error({
                                     title: '失败',
-                                    message: '修改失败'
+                                    message: err.data.msg
                                 });
+                                this.dialogAddDepartment = false
                             },
                         })
                     }
-
                 })
             }
         }

@@ -32,11 +32,11 @@
         <div class="content-box">
             <div class="table-box">
                 <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
-                    <el-table-column type="index" label="序号" width="80"></el-table-column>
+                    <el-table-column type="index" label="序号"></el-table-column>
                     <el-table-column prop="officeName" label="科室名称"></el-table-column>
                     <el-table-column prop="doctorNum" label="医生数量"></el-table-column>
 <!--                    <el-table-column prop="departmentDescription" label="科室介绍" width="350"></el-table-column>-->
-                    <el-table-column label="操作" width="80">
+                    <el-table-column label="操作">
                         <template slot-scope="scope">
                             <el-button @click="handleDetail(scope.row, scope.row.id)" type="primary" size="mini">
                                 详情

@@ -36,11 +36,11 @@
                 </el-button>
             </div>
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
-                    <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="departmentName" label="科室名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="医生数量"></el-table-column>
-                    <el-table-column prop="dNumber" label="科室介绍"></el-table-column>
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
+                    <el-table-column type="index" label="序号"></el-table-column>
+                    <el-table-column prop="officeName" label="科室名称"></el-table-column>
+                    <el-table-column prop="doctorNum" label="医生数量"></el-table-column>
+                    <!--                    <el-table-column prop="departmentDescription" label="科室介绍" width="350"></el-table-column>-->
                 </el-table>
 
                 <div class="pagination-box">
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <add-office-dialog ref="addDepartment_ref"></add-office-dialog>
+        <add-office-dialog @getOfficeList="getOfficeList" ref="addDepartment_ref"></add-office-dialog>
     </div>
 </template>
 
@@ -86,39 +86,66 @@
             }
         },
         created() {
-            // this.getList()
+            this.getOfficeList()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getOfficeList()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getOfficeList()
             },
+            // 重置
             handleReset() {
                 this.searchObj = {
-                    department: ''
+                    departmentName: ''
                 }
+                this.getOfficeList()
             },
+            // 搜索
             handleSearch() {
-
+                this.loading = true;
+                apiDataFilter.request({
+                    apiPath: 'office.searchOffice',
+                    method: 'POST',
+                    data: {
+                        officeName: this.searchObj.department,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
+                    successCallback: (res) => {
+                        this.loading = false;
+                        this.tableData = res.data.list;
+                        this.pageTotal = res.data.total;
+                    },
+                    errorCallback: (err) => {
+                        this.loading = false
+                    }
+                })
             },
             handleClickAddDepartment() {
                 this.$refs['addDepartment_ref'].showDialog();
             },
 
-            getList() {
+            // 获取科室列表
+            getOfficeList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'user.getUserList',
+                    apiPath: 'office.getOfficeList',
                     method: 'post',
-                    data: '',
+                    data: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
                     successCallback: (res) => {
                         this.loading = false;
+                        this.tableData = res.data.list;
+                        this.pageTotal = res.data.total;
                     },
                     errorCallback: (err) => {
+
                     },
                 })
             }

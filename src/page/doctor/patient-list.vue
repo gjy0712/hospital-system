@@ -123,11 +123,11 @@
                             recordId: id
                         },
                         successCallback: (res)=> {
-                            this.$message.success('同意该预约')
+                            this.$message.success('同意该预约成功')
                             this.getRecordList()
                         },
                         errorCallback: (res) => {
-                            this.$message.error('同意该预约')
+                            this.$message.error('同意该预约失败')
                             this.getRecordList()
 
 

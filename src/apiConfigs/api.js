@@ -28,6 +28,7 @@ export default {
             getOfficeList: '/office/getOfficeList',   // 获取科室列表
             getOfficeDetailList: '/office/getOfficeDetailList', // 获取科室详情列表
             searchOffice: '/office/searchOffice', //搜索科室
+            insertOffice: '/office/insertOffice', //新增科室
         },
         // 工作日
         workday: {

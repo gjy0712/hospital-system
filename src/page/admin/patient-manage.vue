@@ -10,11 +10,11 @@
         <!--账号列表-->
         <div class="content-box">
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="departmentName" label="账号"></el-table-column>
-                    <el-table-column prop="dNumber" label="名称"></el-table-column>
-                    <el-table-column prop="dNumber" label="邮箱"></el-table-column>
+                    <el-table-column prop="username" label="账号"></el-table-column>
+                    <el-table-column prop="name" label="名称"></el-table-column>
+                    <el-table-column prop="email" label="邮箱"></el-table-column>
                 </el-table>
 
                 <div class="pagination-box">
@@ -53,27 +53,36 @@
             }
         },
         created() {
-            // this.getList()
+            this.getPatientList()
         },
         methods: {
             handleSizeChange(val) {
                 this.pageSize = val
-                this.getList()
+                this.getPatientList()
             },
             handleCurrentChange(val) {
                 this.currentPage = val
-                this.getList()
+                this.getPatientList()
             },
-            getList() {
+            getPatientList() {
                 this.loading = true;
                 apiDataFilter.request({
-                    apiPath: 'user.getUserList',
+                    apiPath: 'common.getPatientList',
                     method: 'post',
-                    data: '',
+                    data: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
                     successCallback: (res) => {
                         this.loading = false;
+                        if(res.data) {
+                            this.tableData = res.data.list;
+                            this.pageTotal = res.data.total;
+                        }
                     },
                     errorCallback: (err) => {
+                        this.loading = false;
+
                     },
                 })
             }
