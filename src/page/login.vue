@@ -102,7 +102,13 @@
                                     message: '登录成功！',
                                     type: "success"
                                 });
-                                this.$router.push('/home');
+                                if(this.loginForm.userType === 'PATIENT'){
+                                    this.$router.push('/home');
+                                }else if(this.loginForm.userType === 'ADMIN') {
+                                    this.$router.push('/admin');
+                                }else {
+                                    this.$router.push('/doctor');
+                                }
 
                             },
                             errorCallback: (err) => {

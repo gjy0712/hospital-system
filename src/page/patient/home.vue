@@ -49,7 +49,7 @@
         </div>
 
 <!--        推荐医生-->
-        <div class="box">
+        <!--<div class="box">
             <div class="box-title">推荐医生</div>
             <el-row :gutter="20">
                 <el-col :span="4"
@@ -64,10 +64,34 @@
                         <h4>{{item.doctorName}}</h4>
 
                         <el-divider></el-divider>
-                        <!--                        擅长-->
+                        &lt;!&ndash;                        擅长&ndash;&gt;
                     </el-card>
                 </el-col>
             </el-row>
+
+        </div>-->
+
+        <div class="box">
+            <div class="box-title">养生小知识</div>
+                <div class="content-box">
+                    生活要有规律的养生知识。有自制力的人，才能让自己过上较为规律的生活。
+                    而有这种品质的人，也更能为了健康控制自己的饮食、作息。
+                    这种健康规律的生活，有助于让身体保持在较为稳定的平衡状态，这对各器官组织的功能、免疫力都至关重要。
+                    要知道，随着我们年岁渐长，这种平衡越来越不容易保持，
+                    因此，能尽量让生活规律，就意味着你的免疫力可能更强，机体功能更正常。 当然平时也要注意多运动哟！
+                </div>
+        </div>
+
+        <div class="box">
+            <div class="box-title">就诊指南</div>
+            <div class="treatment-guide">
+                <p>一、就诊时请主动出示医保卡（证）。</p>
+                <p>二、如不在本院取药，提前告知医生。</p>
+                <p>三、开具诊断证明和休假证明当日盖章有效。</p>
+                <p>四、持医保刷卡交费，如遇特殊情况退费必须在6日内办理。</p>
+                <p>五、复印住院病历携带患者和代理人身份证原件于出院后10个工作日（遇节假日顺延）到行政楼院内病案室办理。</p>
+                <p>六、医院为无烟医院，就诊期间禁止吸烟，不要随地吐痰、大声喧哗。</p>
+            </div>
 
         </div>
     </div>
@@ -129,7 +153,7 @@
                 stopOnLastSlide: false,
                 disableOnInteraction: false
             } : false;
-            this.getRecommendDoctor()
+            // this.getRecommendDoctor()
         },
         methods: {
             handleClick(tab, event) {
@@ -224,6 +248,30 @@
                 .health-detail:hover {
                     color: #409eff;
                 }
+            }
+
+            .content-box {
+                width: 90%;
+                margin: 0 auto;
+                height: 200px;
+                line-height: 50px;
+                padding: 0 10px;
+                border: 1px solid #5e5e5e;
+                border-radius: 5px;
+                text-indent:2em;
+            }
+
+            .treatment-guide {
+                width: 500px;
+                margin-left: 50px;
+                height: 320px;
+                line-height: 40px;
+                padding: 0 10px;
+                border: 1px solid #5e5e5e;
+                border-radius: 5px;
+                text-indent:2em;
+                background: url("../../assets/img/login-bg1.jpg") 500px 320px no-repeat;
+                background-size: 500px 320px;
             }
         }
     }
