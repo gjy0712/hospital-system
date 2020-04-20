@@ -44,8 +44,18 @@
                     <el-table-column prop="workTime" label="工作日"></el-table-column>
                     <el-table-column prop="status" label="状态">
                         <template slot-scope="scope">
-                            <el-tag v-if="scope.row.status=== 0" type="danger" disable-transitions>停诊</el-tag>
-                            <el-tag v-else type="success" disable-transitions>出诊</el-tag>
+                            <el-tag v-if="scope.row.status=== 0"
+                                    type="danger"
+                                    class="custom-button_long"
+                                    disable-transitions>
+                                停诊
+                            </el-tag>
+                            <el-tag v-else
+                                    type="success"
+                                    class="custom-button_long"
+                                    disable-transitions>
+                                出诊
+                            </el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" width="100">

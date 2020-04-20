@@ -10,16 +10,33 @@
         <!--账号列表-->
         <div class="content-box">
             <div class="table-box">
-                <el-table :data="tableData" stripe style="width: 100%" class="el-table-reset-lite-style">
+                <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" class="el-table-reset-lite-style">
                     <el-table-column type="index" label="序号" width="80"></el-table-column>
-                    <el-table-column prop="applyTime" label="申请时间"></el-table-column>
-                    <el-table-column prop="applyDay" label="申请日期"></el-table-column>
-                    <el-table-column prop="applyResult" label="申请原因" width="200"></el-table-column>
-                    <el-table-column prop="applySituation" label="申请情况"></el-table-column>
-                    <el-table-column prop="applyStatus" label="状态"></el-table-column>
+                    <el-table-column prop="applyTime" label="申请时间" width="180"></el-table-column>
+                    <el-table-column prop="workTime,period" label="申请日期" width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.workTime}} {{scope.row.period}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="reason" label="申请原因" width="200"></el-table-column>
+                    <el-table-column prop="request" label="申请情况">
+                        <template slot-scope="scope">
+                            <el-tag v-if="scope.row.request=== '0'" type="danger" disable-transitions>申请停诊</el-tag>
+                            <el-tag v-else type="success" disable-transitions>申请出诊</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template slot-scope="scope">
+                            <el-tag v-if="scope.row.status=== 0" type="danger" disable-transitions>已拒绝</el-tag>
+                            <el-tag v-else-if="scope.row.status=== 1" type="success" disable-transitions>已同意</el-tag>
+                            <el-tag v-else type="warning" disable-transitions>待处理</el-tag>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="操作" width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleCancel(scope.row.id)" type="danger" size="mini">
+                            <el-button @click="handleCancel(scope.row.id)"
+                                       :disabled="scope.row.status=== 0 || scope.row.status=== 1"
+                                       size="mini">
                                 取消申请
                             </el-button>
                         </template>

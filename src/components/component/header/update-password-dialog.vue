@@ -45,12 +45,11 @@
 </template>
 
 <script>
-   /* import apiDataFilter from "../../../utils/apiDataFilter";
-    import {getLocalStore} from "../../../utils/webstore-utils";
-    import {USER} from "../../../config/webstore";
-    import store from '@/vuex/store'*/
+    import apiDataFilter from "../../../utils/apiDataFilter";
+    import {getLocalStore, removeLocalStore} from "../../../utils/webstore-utils";
+    import {TOKEN, USER} from "../../../config/webstore";
 
-    export default {
+   export default {
         name: 'UpdatePasswordDialog',
         computed: {
             formRules() {
@@ -108,40 +107,35 @@
             /*确定新增或修改字段信息*/
             handleSubmit() {
                 this.$refs['dataForm_ref'].validate(valid => {
-                    /*if (valid) {
+                    if (valid) {
                         this.optionsLoading = true
                         let userInfo = JSON.parse(getLocalStore(USER))
+                        let userId = userInfo.id;
+                        let userType = userInfo.userType
                         apiDataFilter.request({
                             apiPath: 'common.updatePassword',
                             method:'post',
                             data: {
-                                user_type:userInfo.userType,
-                                user_name:userInfo.userName,
-                                passwd:this.formData.oldPassword,
-                                new_passwd:this.formData.newPassword
+                                userId: userId,
+                                userType: userType,
+                                oldPassword: this.formData.oldPassword,
+                                newPassword: this.formData.newPassword
                             },
                             successCallback: (res) => {
                                 this.$message.success('密码修改成功，请重新登录！')
-                                store.dispatch('LogOut').then(() => {
-                                    location.reload() // 为了重新实例化vue-router对象 避免bug
-                                })
-                                /!*if (this.isLogin){
-                                    this.$message.success('密码修改成功，请重新登录！')
-                                    store.dispatch('LogOut').then(() => {
-                                        location.reload() // 为了重新实例化vue-router对象 避免bug
-                                    })
-                                } else {
-                                    this.handleCancel()
-                                }*!/
+                                this.optionsLoading = false
+                                // 清空token
+                                removeLocalStore(TOKEN)
+                                this.$router.push('/login');
                             },
                             errorCallback: (err) => {
-                                this.$message.error(err.data.error)
+                                this.$message.error('修改密码失败，请重新输入！')
                             },
                             completeCallback: () => {
                                 this.optionsLoading = false
                             }
                         })
-                    }*/
+                    }
                 })
             },
             showDialog(isLogin = false){

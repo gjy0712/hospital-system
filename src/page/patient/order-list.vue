@@ -25,7 +25,7 @@
                     </el-table-column>
                     <el-table-column prop="status" label="状态">
                         <template  slot-scope="scope">
-                            <el-tag v-if="scope.row.status=== 0" type="dander" disable-transitions>已拒绝</el-tag>
+                            <el-tag v-if="scope.row.status=== 0" type="danger" disable-transitions>已拒绝</el-tag>
                             <el-tag v-else-if="scope.row.status=== 1" type="success" disable-transitions>已同意</el-tag>
                             <el-tag v-else type="warning" disable-transitions>待处理</el-tag>
                         </template>

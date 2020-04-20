@@ -13,12 +13,15 @@ export default {
             // 公共接口
             login: '/user/login', // 登录
             register: '/user/register', // 注册
+            updatePassword: '/user/updatePassword', // 修改密码
+            getPatientList: '/user/getPatientList', // 获取患者信息
         },
         // 医生管理
         doctor: {
             getRecommendDoctor: '/doctor/getRecommendDoctor', //获取推荐医生信息
             getDoctor: '/doctor/getDoctor', // 获取医生信息
             searchDoctor: '/doctor/searchDoctor', //搜索医生
+            insertDoctor: '/doctor/insertDoctor', //新增医生
         },
         // 科室管理
         office: {
@@ -29,7 +32,7 @@ export default {
         // 工作日
         workday: {
             getWorkDay: '/workday/getWorkDay', //医生工作日
-
+            updateWorkday: '/workday/updateWorkday', //管理员分配医生工作日是否出诊
         },
         // 预约记录
         record: {
@@ -41,9 +44,10 @@ export default {
         // 申请排班
         apply: {
             getApply: '/apply/getApply', //分页获取推荐医生排版申请信息
-            insertApply: '/apply/insertApply', //申请工作日
-            deleteApply: '/apply/deleteApply', //取消申请工作日
-
+            insertApply: '/apply/insertApply', // 申请工作日
+            deleteApply: '/apply/deleteApply', // 取消申请工作日
+            getAllApply: '/apply/getAllApply', // 所有医生申请列表
+            updateApply: '/apply/updateApply', // 医生同意或者拒绝医生申请
         }
 
     }
