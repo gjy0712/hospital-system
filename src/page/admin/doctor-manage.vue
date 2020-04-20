@@ -58,6 +58,13 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="description" label="医生介绍" width="180"></el-table-column>
+                    <el-table-column label="详情">
+                        <template slot-scope="scope">
+                            <el-button @click="handleDetail(scope.row, scope.row.id)" type="primary" size="mini">
+                                详情
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
 
                 <div class="pagination-box">
@@ -145,7 +152,14 @@
             // 添加医生
             handleClickAddDoctor() {
                 this.$refs['addDoctor_ref'].showDialog();
-
+            },
+            handleDetail(row, id){
+                this.$router.push({
+                    path: '/admin/registrationManagement',
+                    query: {
+                        id: id,
+                    }
+                })
             },
             getRecommendDoctor() {
                 this.loading = true;

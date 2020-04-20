@@ -116,7 +116,7 @@
                         method: 'POST',
                         data: {
                             status: 1,
-                            workdayId: row.workdayId
+                            applyId: id
                         },
                         successCallback: (res)=> {
                             this.$message.success('同意该申请成功')
@@ -145,7 +145,7 @@
                         method: 'POST',
                         data: {
                             status: 0,
-                            workdayId: row.workdayId
+                            applyId: id
                         },
                         successCallback: (res)=> {
                             this.$message.success('拒绝该申请成功')

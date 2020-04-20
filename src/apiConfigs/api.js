@@ -48,7 +48,7 @@ export default {
             insertApply: '/apply/insertApply', // 申请工作日
             deleteApply: '/apply/deleteApply', // 取消申请工作日
             getAllApply: '/apply/getAllApply', // 所有医生申请列表
-            updateApply: '/apply/updateApply', // 医生同意或者拒绝医生申请
+            updateApply: '/apply/updateApply', // 管理员同意或者拒绝医生申请
         }
 
     }

@@ -108,7 +108,7 @@
                     }
                 ).then(() => {
                     apiDataFilter.request({
-                        apiPath: 'message.deleteMessage',
+                        apiPath: 'apply.deleteApply',
                         method: 'POST',
                         data: {
                             applyId: id

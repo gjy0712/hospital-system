@@ -12,7 +12,7 @@ export const defaultRouterMap = [
     },
     {
         path: '/admin',
-        redirect: '/admin/info'
+        redirect: '/admin/doctorManage'
     },
     {
         path: '/doctor',
@@ -93,6 +93,11 @@ export const defaultRouterMap = [
                 meta: { title: '医生信息管理' }
             },
             {
+                path: '/admin/registrationManagement',
+                component: () => import('../page/admin/registration-management'),
+                meta: { title: '医生排班申请管理' }
+            },
+            {
                 path: '/admin/patientManage',
                 component: () => import('../page/admin/patient-manage'),
                 meta: { title: '患者信息管理' }
@@ -105,7 +110,7 @@ export const defaultRouterMap = [
             {
                 path: '/admin/applyManage',
                 component: () => import('../page/admin/apply-manage'),
-                meta: { title: '排班信息管理' }
+                meta: { title: '排班申请管理' }
             },
         ]
     },
