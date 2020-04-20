@@ -49,13 +49,13 @@
                     </el-table-column>
                     <el-table-column prop="fee" label="出诊费">
                         <template  slot-scope="scope">
-                            ￥{{scope.row.fee}}.0 元
+                            {{scope.row.fee}}.0 元
                         </template>
                     </el-table-column>
                     <el-table-column prop="description" label="医生介绍" width="180"></el-table-column>
                     <el-table-column fixed="right" label="操作" width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleRegister(scope.row.id)" type="primary" size="mini">
+                            <el-button @click="handleRegister(scope.row, scope.row.id)" type="primary" size="mini">
                                 我要挂号
                             </el-button>
                         </template>
@@ -139,11 +139,12 @@
                     }
                 })
             },
-            handleRegister(did) {
+            handleRegister(row, id) {
                 this.$router.push({
                     path: '/registration',
                     query: {
-                        did: did
+                        id: id,
+                        doctorInfo: row
                     }
                 })
             },

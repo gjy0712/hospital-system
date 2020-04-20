@@ -64,7 +64,7 @@
                     </el-table-column>
                     <el-table-column prop="fee" label="出诊费">
                         <template  slot-scope="scope">
-                            ￥{{scope.row.fee}}.0 元
+                            {{scope.row.fee}}.0 元
                         </template>
                     </el-table-column>
                     <el-table-column prop="description" label="医生介绍" width="180" ></el-table-column>
@@ -119,15 +119,14 @@
                 currentPage: 1,
                 pageSize: 10,
                 pageTotal: 0,
-                departmentId: ''
             }
         },
+        mounted() {
+        },
         created() {
-            this.departmentId = this.$route.query.id || '';
-
             this.departmentObj.officeName = this.$route.query.officeName || '';
             this.departmentObj.departmentDescription = this.$route.query.officeName || '';
-            this.departmentObj.doctorNum = this.$route.query.doctorNum || '';
+            // this.departmentObj.doctorNum = this.$route.query.doctorNum || '';
             this.getList()
         },
         methods: {
@@ -168,8 +167,15 @@
                     },
                     successCallback: (res) => {
                         this.loading = false;
-                        this.tableData = res.data.list;
-                        this.pageTotal = res.data.total;
+                        if(res.data) {
+                            this.tableData = res.data.list;
+                            this.pageTotal = res.data.total;
+                            this.departmentObj.doctorNum = res.data.total;
+                            this.departmentObj.departmentDescription = res.data.list[0].officeName
+                        }
+                        else {
+                            this.departmentObj.doctorNum = 0;
+                        }
                     },
                     errorCallback: (err) => {
                         this.loading = false;

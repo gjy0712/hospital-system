@@ -14,7 +14,7 @@
                 <el-col :span="6">
                     <div class="grid-content">
                         搜索科室：
-                        <el-input size="small" v-model="searchObj.departmentName"
+                        <el-input size="small" v-model="searchObj.officeName"
                                   @keyup.enter.native="handleSearch"
                                   placeholder="请输入科室名称"></el-input>
                     </div>
@@ -75,7 +75,7 @@
             return {
                 loading: false,
                 searchObj: {
-                    departmentName: ''
+                    officeName: ''
                 },
                 tableData: [],
                 currentPage: 1,
@@ -104,16 +104,32 @@
             },
             // 搜索
             handleSearch() {
-                this.getOfficeList()
+                this.loading = true;
+                apiDataFilter.request({
+                    apiPath: 'office.searchOffice',
+                    method: 'POST',
+                    data: {
+                        officeName: this.searchObj.officeName,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    },
+                    successCallback: (res) => {
+                        this.loading = false;
+                        this.tableData = res.data.list;
+                        this.pageTotal = res.data.total;
+                    },
+                    errorCallback: (err) => {
+                        this.loading = false
+                    }
+                })
             },
             // 详情
             handleDetail(row, id) {
+                console.log(id)
                 this.$router.push({
                     path: '/searchOfficeDetail',
                     query: {
-                        departmentId: id,
-                        officeName: row.officeName,
-                        doctorNum: row.doctorNum,
+                        officeName: row.officeName
                     }
                 })
             },
