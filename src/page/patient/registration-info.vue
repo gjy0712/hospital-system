@@ -9,18 +9,31 @@
 
         <div class="content-box">
             <div class="department-box">
-                <p class="department box-title">
-                    医生姓名：
-                    <span>{{doctorInfo.name}}</span>
+                <p class="department-image box-title">
+                    <img :src="doctorInfo.picpath" alt="" class="image">
                 </p>
-                <p class="department-Name box-title">
-                    科室：
-                    <span>{{doctorInfo.officeName}}</span>
-                </p>
-                <p class="department-career box-title">
-                    职位：
-                    <span class="total-number">{{doctorInfo.career}}</span>
-                </p>
+                <div class="doctor-box">
+                    <p class="department box-title">
+                        医生姓名：
+                        <span>{{doctorInfo.name}}</span>
+                    </p>
+                    <p class="department-Name box-title">
+                        科室：
+                        <span>{{doctorInfo.officeName}}</span>
+                    </p>
+                    <p class="department-career box-title">
+                        职位：
+                        <span class="total-number">{{doctorInfo.career}}</span>
+                    </p>
+                    <p class="box-title">
+                        描述：
+                        <span class="">{{doctorInfo.description}}</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="table-box">
+
             </div>
         </div>
     </div>
@@ -28,6 +41,7 @@
 
 <script>
     import { PageHeader } from '../../components/public'
+    import apiDataFilter from "../../utils/apiDataFilter";
 
     export default {
         name: "registration-dialog",
@@ -37,18 +51,44 @@
         data() {
             return {
                 doctorInfo: {
+                    picpath: '',
                     name: '',
                     officeName: '',
-
-                }
+                    description: '',
+                    career: ''
+                },
+                doctorId: ''
             }
         },
         created() {
-            this.doctorInfo = this.$route.query.doctorInfo
-            console.log(this.doctorInfo)
+            this.doctorInfo = this.$route.query.doctorInfo || '';
+            this.doctorId = this.$route.query.id
+
+            this.getWorkDay()
         },
         methods: {
 
+            getWorkDay() {
+                apiDataFilter.request({
+                    apiPath: 'workday.getWorkDay',
+                    method: 'post',
+                    data: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        doctorId: this.doctorId
+                    },
+                    successCallback: (res) => {
+                        if(res.data) {
+                            this.tableData = res.data.list;
+                            this.pageTotal = res.data.total;
+                        }
+
+                    },
+                    errorCallback: (err) => {
+
+                    },
+                })
+            }
         }
     }
 </script>
@@ -65,15 +105,29 @@
 
             .department-box {
                 background-color: @gray-color ;
-                margin-bottom: 20px;
+                border-radius: 5px;
+                padding: 30px;
                 .box-title {
                     padding: 10px;
                 }
+                .department-image {
+                    width: 135px;
+                    height: 160px;
+                    display: inline-block;
+                    margin: 0 30px 20px 50px;
+                    .image {
+                        width: 135px;
+                        height: 160px;
+                        border-radius: 50%;
+                    }
+                }
+                .doctor-box {
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin: 0 200px;
+                }
             }
 
-            .table-box {
-
-            }
         }
     }
 </style>
