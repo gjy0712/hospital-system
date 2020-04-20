@@ -285,6 +285,17 @@
                                     type: "success"
                                 });
                                 this.dialogAddDoctor = false
+                                this.dataInfo = {
+                                    account: '',
+                                    password: '',
+                                    name: '',
+                                    age: '',
+                                    fee: '',
+                                    sex: '',
+                                    department: '',
+                                    position: '',
+                                    description: ''
+                                }
                                 this.$emit('getRecommendDoctor')
                             },
                             errorCallback: (err) => {
@@ -295,6 +306,17 @@
                                     message: '添加失败'
                                 });
                                 this.dialogAddDoctor = false
+                                this.dataInfo = {
+                                    account: '',
+                                    password: '',
+                                    name: '',
+                                    age: '',
+                                    fee: '',
+                                    sex: '',
+                                    department: '',
+                                    position: '',
+                                    description: ''
+                                }
                             },
                         })
                     }

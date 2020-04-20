@@ -72,6 +72,9 @@
             handleCancel(formName) {
                 this.$refs[formName].clearValidate()
                 this.dialogAddDepartment = false
+                this.dataInfo = {
+                    name: ''
+                }
             },
             handleSubmit() {
                 this.$refs['info'].validate(valid => {
@@ -92,6 +95,9 @@
                                     type: "success"
                                 });
                                 this.dialogAddDepartment = false
+                                this.dataInfo = {
+                                    name: ''
+                                }
                                 this.$emit('getOfficeList')
                             },
                             errorCallback: (err) => {
@@ -102,6 +108,9 @@
                                     message: err.data.msg
                                 });
                                 this.dialogAddDepartment = false
+                                this.dataInfo = {
+                                    name: ''
+                                }
                             },
                         })
                     }
